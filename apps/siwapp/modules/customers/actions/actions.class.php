@@ -20,9 +20,6 @@ class customersActions extends sfActions
   {
     $this->forward404Unless($customer = Doctrine::getTable('Customer')->find($request->getParameter('id')),
       sprintf('Object customer does not exist with id %s', $request->getParameter('id')));
-    
-    $this->forward404Unless($customer->getCompanyId() == $this->getUser()->getAttribute('company_id'),
-      sprintf('Object customer does not exist with id %s', $request->getParameter('id')));
       
     return $customer;
   }
@@ -35,7 +32,7 @@ class customersActions extends sfActions
     $page       = $this->getUser()->getAttribute('page', 1, $namespace);
     $maxResults = $this->getUser()->getPaginationMaxResults();
     
-    $q = CustomerQuery::create()->where('company_id = ?', sfContext::getInstance()->getUser()->getAttribute('company_id'))->search($search)->orderBy("$sort[0] $sort[1], name $sort[1]");
+    $q = CustomerQuery::create()->search($search)->orderBy("$sort[0] $sort[1], name $sort[1]");
     $date_range = array();
     $date_range['from'] = isset($search['from']) ? $search['from'] : null;
     $date_range['to']   = isset($search['to'])   ? $search['to']   : null;
@@ -58,6 +55,14 @@ class customersActions extends sfActions
   {
     $i18n = $this->getContext()->getI18N();
     $customer = new Customer();
+    $customer->fromArray(array(
+                          'name'=>$i18n->__('Client Name'),
+                          'identification'=>$i18n->__('Client Legal Id'),
+                          'contact_person'=> $i18n->__('Contact Person'),
+                          'invoicing_address'=> $i18n->__('Invoicing Address'),
+                          'shipping_address'=> $i18n->__('Shipping Address'),
+                          'email'=> $i18n->__('Client Email')
+                          ));
     $this->customerForm = new CustomerForm($customer, array('culture'=>$this->culture));
     $this->title       = $i18n->__('New Customer');
     $this->action      = 'create';
@@ -139,6 +144,10 @@ class customersActions extends sfActions
     }
     else
     {
+      foreach($form->getErrorSchema()->getErrors() as $k=>$v)
+      {
+        $this->getUser()->error(sprintf('%s: %s', $k, $v->getMessageFormat()));
+      }
       $this->getUser()->error($i18n->__('The customer has not been saved due to some errors.'));
     }
   }

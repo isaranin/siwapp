@@ -9,12 +9,6 @@ class searchComponents extends sfComponents
     $this->form = new InvoiceSearchForm($this->search, array('culture'=>$this->getUser()->getCulture()));
   }
 
-  public function executeExpenseForm(sfWebRequest $request)
-  {
-    $this->getStuff($request);
-    $this->form = new ExpenseSearchForm($this->search, array('culture'=>$this->getUser()->getCulture()));
-  }
-
   public function executeRecurringForm(sfWebRequest $request)
   {
     $this->getStuff($request);
@@ -27,34 +21,15 @@ class searchComponents extends sfComponents
     $this->form = new CustomerSearchForm($this->search, array('culture'=>$this->getUser()->getCulture()));
   }
 
-  public function executeSupplierForm(sfWebRequest $request)
-  {
-    $this->getStuff($request);
-    $this->form = new SupplierSearchForm($this->search, array('culture'=>$this->getUser()->getCulture()));
-  }
-
   public function executeProductForm(sfWebRequest $request)
   {
     $this->getStuff($request);
     $this->form = new ProductSearchForm($this->search, array('culture'=>$this->getUser()->getCulture()));
   }
-
-  public function executeCompanyForm(sfWebRequest $request)
-  {
-    $this->getStuff($request);
-    $this->form = new CompanySearchForm($this->search, array('culture'=>$this->getUser()->getCulture()));
-  }
-  
-  public function executeUserForm(sfWebRequest $request)
-  {
-    $this->getStuff($request);
-    $this->form = new UserSearchForm($this->search, array('culture'=>$this->getUser()->getCulture()));
-  }
   
   public function executeEstimateForm(sfWebRequest $request)
   {
-    $this->getStuff($request);
-    $this->form = new InvoiceSearchForm($this->search, array('culture'=>$this->getUser()->getCulture()));
+    $this->executeForm($request);
   }
   
   private function getStuff(sfWebRequest $request)

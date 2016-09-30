@@ -13,13 +13,11 @@ abstract class BasePropertyFormFilter extends BaseFormFilterDoctrine
   public function setup()
   {
     $this->setWidgets(array(
-      'company_id' => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('Company'), 'add_empty' => true)),
-      'value'      => new sfWidgetFormFilterInput(),
+      'value' => new sfWidgetFormFilterInput(),
     ));
 
     $this->setValidators(array(
-      'company_id' => new sfValidatorDoctrineChoice(array('required' => false, 'model' => $this->getRelatedModelName('Company'), 'column' => 'id')),
-      'value'      => new sfValidatorPass(array('required' => false)),
+      'value' => new sfValidatorPass(array('required' => false)),
     ));
 
     $this->widgetSchema->setNameFormat('property_filters[%s]');
@@ -39,9 +37,8 @@ abstract class BasePropertyFormFilter extends BaseFormFilterDoctrine
   public function getFields()
   {
     return array(
-      'company_id' => 'ForeignKey',
-      'keey'       => 'Text',
-      'value'      => 'Text',
+      'keey'  => 'Text',
+      'value' => 'Text',
     );
   }
 }

@@ -11,21 +11,8 @@ class ProfileForm extends BaseProfileForm
 {
   public function configure()
   {
-    $user = sfContext::getInstance()->getUser();
-    
-    $this->widgetSchema['company_user_list'] =  new sfWidgetFormDoctrineChoice(array('multiple' => true, 'model' => 'sfGuardUser'));
-    
-    $this->widgetSchema['series'] = new sfWidgetFormSelect(
-                                          array(
-                                            'choices' => SeriesTable::getChoicesForSelect()
-                                            ));
-
-    
-    $this->widgetSchema['username'] = new sfWidgetFormInputText();
-    $this->widgetSchema['superadmin'] = new sfWidgetFormInputCheckbox(array(),array('value'=>1));
-
+    $user = $this->getOption('user');
     $this->widgetSchema['sf_guard_user_id'] = new sfWidgetFormInputHidden();
-    $this->widgetSchema['created_by_user_id'] = new sfWidgetFormInputHidden();
       
     $this->widgetSchema['language']         = new sfWidgetFormI18nChoiceLanguage(
                                                     array(
@@ -49,19 +36,49 @@ class ProfileForm extends BaseProfileForm
                                                       'choices'   => InvoiceSearchForm::getQuickDates()
                                                       )
                                                     );
+    $this->widgetSchema['series'] = new sfWidgetFormSelect(
+                                          array(
+                                            'choices' => 
+                                              SeriesTable::getChoicesForSelect()
+                                            ));
     
+    $this->widgetSchema['old_password']     = new sfWidgetFormInputPassword();
+    $this->widgetSchema['new_password']     = new sfWidgetFormInputPassword();
+    $this->widgetSchema['new_password2']    = new sfWidgetFormInputPassword();
 
-    $this->widgetSchema['new_password']    = new sfWidgetFormInputPassword();
-    $this->validatorSchema['superadmin']   = new sfValidatorPass();
-    $this->validatorSchema['username']= new sfValidatorString(array('max_length' => 128));
-
+    $this->validatorSchema['sf_guard_user_id'] = new sfValidatorAnd(
+                                                       array(
+                                                         new sfValidatorDoctrineChoice(
+                                                               array(
+                                                                 'model' => 'sfGuardUser',
+                                                                 'required' => true
+                                                                 ), 
+                                                               array(
+                                                                 'invalid' => "The user does not exist!"
+                                                                 )
+                                                               ),
+                                                         new CompareValueValidator(
+                                                               array(
+                                                                 'value' => $user->getGuardUser()->getId()
+                                                                 )
+                                                               )
+                                                         )
+                                                       );
     $this->validatorSchema['language']         = new sfValidatorI18nChoiceLanguage(
                                                        array('required' => true)
                                                        );
     $this->validatorSchema['country']          = new sfValidatorI18nChoiceCountry(
                                                        array('required' => false)
                                                        );
-
+    $this->validatorSchema['series']           = new sfValidatorDoctrineChoice(
+                                                       array(
+                                                             'model'=>'Series',
+                                                             ),
+                                                       array(
+                                                             'required' 
+                                                               => 'The default invoicing series is mandatory'
+                                                             )
+                                                       );
     $this->validatorSchema['search_filter']    = new sfValidatorChoice(
                                                        array(
                                                          'required' => false,
@@ -77,9 +94,21 @@ class ProfileForm extends BaseProfileForm
                                                          'required' => true
                                                          )
                                                        );
+    $this->validatorSchema['old_password']   = new sfValidatorPass();
+
+    $vdPassword                              = new sfValidatorCallback(
+                                                       array(
+                                                         'callback' => array($this,'checkPassword')
+                                                         ),
+                                                       array(
+                                                         'invalid'  => 'Wrong password',
+                                                         'required' => 'Old password required'
+                                                         )
+                                                       );
 
     $passwd_min_length = sfConfig::get('app_password_min_length',4);
-    $this->validatorSchema['new_password']     = new sfValidatorString(
+    $this->validatorSchema['new_password']     = new sfValidatorPass();
+    $vdNewPassword                             = new sfValidatorString(
                                                        array(
                                                              'min_length' => 1,
                                                          'required'=>false
@@ -90,78 +119,75 @@ class ProfileForm extends BaseProfileForm
                                                          )
                                                        );
 
+    $this->validatorSchema['new_password2']    = new sfValidatorPass();
+
+    $vd = new sfValidatorSchema(
+                array(
+                      'old_password' => $vdPassword,
+                      'new_password' => $vdNewPassword,
+                      'new_password2'=> new sfValidatorPass()
+                      )
+                );
+    
+    $vd->setPostValidator(
+            new sfValidatorSchemaCompare(
+                  'new_password','==','new_password2',
+                  array(),
+                  array('invalid' => "Passwords don't match")
+                  )
+            );
+
+
+    $this->validatorSchema->setPostValidator(
+                              new SiwappConditionalValidator(
+                                    array(
+                                      'control_field'    => 'new_password',
+                                      'validator_schema' => $vd,
+                                      'callback'         => array('Tools','checkLength')
+                                      )
+                                    )
+                              );
 
     
     $this->widgetSchema->setLabels(array(
         'nb_display_results'  => 'Results to display in listings',
         'language'            => 'Interface language',
         'series'              => 'Default invoicing series',
-        'time_to_due'         => 'Default invoicing time to due',
-        'min_stock_level'     => 'Default min stock level',
         'old_password'        => 'Old password',
         'new_password'        => 'New password',
         'new_password2'       => 'New password (confirmation)',
         'first_name'          => 'First Name',
         'last_name'          => 'Last Name'
       ));
-      //var_dump($this->getOption("username"));exit();
+      
     $this->setDefaults(array(
         'nb_display_results'  => 10,
         'language'            => $user->getLanguage(),
-        'country'             => $user->getCountry(),
-        'username'            => $this->getOption('username'),
-        'superadmin'          => $this->getOption('superadmin'),
-        'created_by_user_id'  => sfContext::getInstance()->getUser()->getGuardUser()->getId(),
+        'country'             => $user->getCountry()
       ));
-     
+    
+
+
+      
     $this->widgetSchema->setNameFormat('config[%s]');
-    //Allow extra fields
-    $this->validatorSchema->setOption('allow_extra_fields', true);
-    
   }
 
-  public function save($con = null, $currentUser = false)
+  public function save($con = null)
   {
-    
-    $values=$this->getValues();
-    //var_dump($values); exit();
-    $id = parent::save($con);
-    if(!$currentUser)
+    if(strlen($this->values['new_password']))
     {
-        $name = $values['username'];
-        $salt = md5(rand(100000, 999999) . $name);
-        $pass = $values['new_password'];
-        $superadmin = $values['superadmin'] ? 1 : 0 ;
-
-        if (is_null($values['sf_guard_user_id']))
-        {
-            $user = new SfGuardUser();
-            $user->setUsername($name);
-            $user->setAlgorithm('sha1');
-            $user->setSalt($salt);
-            $user->setPassword($pass);
-            $user->setIsActive(true);
-            $user->setIsSuperAdmin($superadmin);
-            $user->save();
-            $this->getObject()->setUser($user);
-            $this->getObject()->save();
-        }
-        else if(strlen($this->values['new_password']))
-        {
-            $user = Doctrine_Core::getTable('sfGuardUser')->find($values['sf_guard_user_id']);
-            $user->setPassword($pass);
-            $user->setIsSuperAdmin($superadmin);
-            $user->save();
-        } else {
-            $user = Doctrine_Core::getTable('sfGuardUser')->find($values['sf_guard_user_id']);
-            $user->setIsSuperAdmin($superadmin);
-            $user->save();
-        }
+      $this->getOption('user')->setPassword($this->values['new_password']);
     }
-
-    return $id;
+    parent::save($con);
   }
 
-
+  public function checkPassword(sfValidatorCallback $validator,$password)
+  {
+    if(!$this->getOption('user')->checkPassword($password))
+    {
+      throw new sfValidatorError($validator,'invalid',array('value'=>$password));
+    }
+    return true;
+  }
 
 }

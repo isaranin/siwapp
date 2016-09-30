@@ -22,10 +22,6 @@ abstract class BaseFormDoctrine extends sfFormDoctrine
                                       sfConfig::get('sf_default_culture'));
     $this->JQueryDateOptions['culture'] = substr($this->culture, 0, 2);
     $this->JQueryDateOptions['image']   = $this->getImagePath('icons/calendar.png');
-    
-    $startYear = sfConfig::get('app_year_range_start', date('Y') - 5);
-    $years = range($startYear, date('Y') + 5);
-    $this->JQueryDateOptions['years'] = array_combine($years, $years);
   }
   
   protected function getImagePath($source)

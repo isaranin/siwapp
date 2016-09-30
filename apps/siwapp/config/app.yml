@@ -1,5 +1,5 @@
 all:
-  version:  1.6.3
+  version:  0.4.1
 
   .culture:
     currency_decimals:  { BHD: 3, IQD: 3, JOD: 3, KWD: 3, LYD: 3, OMR: 3, TND: 3, BIF: 0, BYR: 0, CLP: 0, DJF: 0, HUF: 0, ISK: 0, JPY: 0, KMF: 0, KRW: 0, MGA: 0, PYG: 0, RWF: 0, VUV: 0, XPF: 0 }
@@ -24,42 +24,27 @@ all:
         modules: ['sfguardauth']
         actions: ['index']
 
-  modules:
-    mandatory:
+  modules: 
+    mandatory: 
       dashboard:
         tab_name: 'Dashboard'
         new_button_name: 'New Invoice'
-      customers:
-        verbose_name: 'Customers Module'
-        tab_name: 'Customers'
-        new_button_name: 'New Customer'
-      products:
-        verbose_name: 'Products Module'
-        tab_name: 'Products'
-        new_button_name: 'New Product'
-      estimates:
-        verbose_name: 'Estimates Module'
-        tab_name: 'Estimates'
-        new_button_name: 'New Estimate'
       invoices:
         tab_name: 'Invoices'
         new_button_name: 'New Invoice'
       recurring:
         tab_name: 'Recurring Invoices'
         new_button_name: 'New Recurring Invoice'
-      suppliers:
-        verbose_name: 'Suppliers Module'
-        tab_name: 'Suppliers'
-        new_button_name: 'New Supplier'
-      expenses:
-        verbose_name: 'Expenses Module'
-        tab_name: 'Expenses'
-        new_button_name: 'New Expense'
-      companies:
-        verbose_name: 'Companies Module'
-        tab_name: 'COMPANIES'
-        new_button_name: 'New Company'
-      users:
-        verbose_name: 'Users Module'
-        tab_name: 'USERS'
-        new_button_name: 'New User'
+    optional:
+      customers:
+        verbose_name: 'Customers Module'
+        tab_name: 'Customers'
+        new_button_name: 'New Customer'
+      estimates:
+        verbose_name: 'Estimates Module'
+        tab_name: 'Estimates'
+        new_button_name: 'New Estimate'
+      products:
+        verbose_name: 'Products Module'
+        tab_name: 'Products'
+        new_button_name: 'New Product'

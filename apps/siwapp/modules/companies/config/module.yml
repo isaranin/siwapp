@@ -1,5 +1,0 @@
-all:
-  urls:
-    include: ['search']
-    variables:
-      editRow:          companies/edit

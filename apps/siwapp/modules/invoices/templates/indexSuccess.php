@@ -33,15 +33,13 @@ $csrf     = new sfForm();
             <?php
               // sort parameter => array (Name, default order)
               renderHeaders(array(
-                'series_id'        => array('Serie', 'desc'),
                 'number'        => array('Number', 'desc'),
-                'customer_name' => array('Name/Legal Name', 'asc'),
+                'customer_name' => array('Customer Name', 'asc'),
                 'issue_date'    => array('Date', 'desc'),
                 'due_date'      => array('Due Date', 'asc'),
                 'status'        => array('Status', 'asc'),
                 'due_amount'    => array('Due', 'desc'),
-                'gross_amount'  => array('Total', 'desc'),
-                'related_estimate'  => array('Estimate', 'asc')
+                'gross_amount'  => array('Total', 'desc')
                 ), $sf_data->getRaw('sort'), '@invoices');
             ?>
             <th class="noborder"></th>
@@ -57,9 +55,8 @@ $csrf     = new sfForm();
             ?>
             <tr id="invoice-<?php echo $id ?>" class="<?php echo "$parity link invoice-$id" ?>">
               <td class="check"><input rel="item" type="checkbox" value="<?php echo $id ?>" name="ids[]"></td>
-              <td><?php echo $invoice->getSeries()->getName() ?></td>
               <td><?php echo $invoice ?></td>
-              <td class="<?php echo $invoice->getSentByEmail() ? 'sent' : null ?><?php echo $invoice->getRemesed() ? 'remesed' : null ?>"><?php echo $invoice->getCustomerName() ?> <br><span style="padding-left:10px;font-size:11px;font-style:italic;"><?php echo __('Notes').': '.substr($invoice->getNotes(),0,40) ?></span></td>
+              <td class="<?php echo $invoice->getSentByEmail() ? 'sent' : null ?>"><?php echo $invoice->getCustomerName() ?></td>
               <td><?php echo format_date($invoice->getIssueDate()) ?></td>
               <td><?php echo format_date($invoice->getDueDate()) ?></td>
               <td>
@@ -74,18 +71,6 @@ $csrf     = new sfForm();
                 <?php endif?>
                 <?php echo format_currency($invoice->getGrossAmount(), $currency)  ?>
               </td>
-              <td><?php
-                        $rel = $invoice->getEstimate()->getId();
-                        if(isset($rel))
-                        {
-                           echo link_to(__('Go to Estimate'),'@estimates_edit?id='.$rel);
-                        }
-                        else
-                        {
-                           echo __('No related Estimate');
-                        }
-
-               ?></td>
               <td class="action payments">
                 <?php echo gButton(__("Payments"), "id=load-payments-for-$id type=button rel=payments:show class=payment action-clear {$invoice->getStatus()}") ?>
               </td>

@@ -20,10 +20,8 @@ class SeriesTable extends Doctrine_Table
     
     if ($enabled_only)
     {
-      $finder->addWhere('Enabled = ?', '1');
+      $finder->where('Enabled = ?', '1');
     }
-    
-    $finder->addWhere('company_id = ?', sfContext::getInstance()->getUser()->getAttribute('company_id'));
     
     foreach ($finder->execute() as $s)
     {

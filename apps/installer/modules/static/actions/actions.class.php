@@ -371,29 +371,22 @@ class staticActions extends sfActions
   {
     $dir = sfConfig::get('sf_data_dir').DIRECTORY_SEPARATOR.'sql';
     $sql = explode(';', file_get_contents($dir.DIRECTORY_SEPARATOR.'schema.sql'), -1);
-    //TO Allow entering accents correctly.
-    $sql[] = "SET NAMES 'utf8'";
     $sql[] = file_get_contents($dir.DIRECTORY_SEPARATOR.'migration.schema.sql');
-    $sql[] = "INSERT INTO  company (name) VALUES ('Default Company')";
     
     if ($this->getUser()->getAttribute('preload'))
     {
-      $sql[] = "INSERT INTO property VALUES (1,'sample_data_load', '1')";
+      $sql[] = "INSERT INTO property VALUES ('sample_data_load', '1')";
     }
     // if no data preload, insert a default invoice serie
     else
     {
-      $sql[] = "INSERT INTO series(company_id,name, value, first_number, enabled) VALUES (1,'Default', '', '1', '1')";
+      $sql[] = "INSERT INTO series(name, value, first_number, enabled) VALUES ('Default', '', '1', '1')";
     }
     
     $sql[] = $this->getGuardUserQuery();
     $sql[] = $this->getProfileQuery();
-    //Assing the user to the first company:
-    $sql[] = "INSERT INTO company_user VALUES (1,1)";
     $sql = array_merge($sql, $this->getDefaultTemplateQuery());
     $sql[] = $this->getMigrationVersionQuery();
-    //Assign templates to first company
-    $sql[] = "UPDATE template set company_id = 1";
     // we add  "drop table if exists" statements in case there is already a db with tables
     $nsql = array();
     $nsql[] = "SET foreign_key_checks = 0";

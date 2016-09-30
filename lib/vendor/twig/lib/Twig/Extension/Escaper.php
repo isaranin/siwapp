@@ -10,11 +10,11 @@
  */
 class Twig_Extension_Escaper extends Twig_Extension
 {
-    protected $defaultStrategy;
+    protected $autoescape;
 
-    public function __construct($defaultStrategy = 'html')
+    public function __construct($autoescape = true)
     {
-        $this->setDefaultStrategy($defaultStrategy);
+        $this->autoescape = $autoescape;
     }
 
     /**
@@ -30,7 +30,7 @@ class Twig_Extension_Escaper extends Twig_Extension
     /**
      * Returns the node visitor instances to add to the existing list.
      *
-     * @return Twig_NodeVisitorInterface[] An array of Twig_NodeVisitorInterface instances
+     * @return array An array of Twig_NodeVisitorInterface instances
      */
     public function getNodeVisitors()
     {
@@ -45,44 +45,13 @@ class Twig_Extension_Escaper extends Twig_Extension
     public function getFilters()
     {
         return array(
-            new Twig_SimpleFilter('raw', 'twig_raw_filter', array('is_safe' => array('all'))),
+            'raw' => new Twig_Filter_Function('twig_raw_filter', array('is_safe' => array('all'))),
         );
     }
 
-    /**
-     * Sets the default strategy to use when not defined by the user.
-     *
-     * The strategy can be a valid PHP callback that takes the template
-     * "filename" as an argument and returns the strategy to use.
-     *
-     * @param mixed $defaultStrategy An escaping strategy
-     */
-    public function setDefaultStrategy($defaultStrategy)
+    public function isGlobal()
     {
-        // for BC
-        if (true === $defaultStrategy) {
-            $defaultStrategy = 'html';
-        }
-
-        $this->defaultStrategy = $defaultStrategy;
-    }
-
-    /**
-     * Gets the default strategy to use when not defined by the user.
-     *
-     * @param string $filename The template "filename"
-     *
-     * @return string The default strategy to use for the template
-     */
-    public function getDefaultStrategy($filename)
-    {
-        // disable string callables to avoid calling a function named html or js,
-        // or any other upcoming escaping strategy
-        if (!is_string($this->defaultStrategy) && is_callable($this->defaultStrategy)) {
-            return call_user_func($this->defaultStrategy, $filename);
-        }
-
-        return $this->defaultStrategy;
+        return $this->autoescape;
     }
 
     /**
@@ -96,12 +65,9 @@ class Twig_Extension_Escaper extends Twig_Extension
     }
 }
 
-/**
- * Marks a variable as being safe.
- *
- * @param string $string A PHP variable
- */
+// tells the escaper node visitor that the string is safe
 function twig_raw_filter($string)
 {
     return $string;
 }
+

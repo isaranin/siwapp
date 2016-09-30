@@ -13,13 +13,14 @@
 /**
  * Represents a block call node.
  *
- * @author Fabien Potencier <fabien@symfony.com>
+ * @package    twig
+ * @author     Fabien Potencier <fabien@symfony.com>
  */
 class Twig_Node_Expression_BlockReference extends Twig_Node_Expression
 {
     public function __construct(Twig_NodeInterface $name, $asString = false, $lineno, $tag = null)
     {
-        parent::__construct(array('name' => $name), array('as_string' => $asString, 'output' => false), $lineno, $tag);
+        parent::__construct(array('name' => $name), array('as_string' => $asString), $lineno, $tag);
     }
 
     /**
@@ -33,19 +34,10 @@ class Twig_Node_Expression_BlockReference extends Twig_Node_Expression
             $compiler->raw('(string) ');
         }
 
-        if ($this->getAttribute('output')) {
-            $compiler
-                ->addDebugInfo($this)
-                ->write("\$this->displayBlock(")
-                ->subcompile($this->getNode('name'))
-                ->raw(", \$context, \$blocks);\n")
-            ;
-        } else {
-            $compiler
-                ->raw("\$this->renderBlock(")
-                ->subcompile($this->getNode('name'))
-                ->raw(", \$context, \$blocks)")
-            ;
-        }
+        $compiler
+            ->raw("\$this->renderBlock(")
+            ->subcompile($this->getNode('name'))
+            ->raw(", \$context, \$blocks)")
+        ;
     }
 }

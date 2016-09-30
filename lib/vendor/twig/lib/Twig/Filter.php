@@ -12,15 +12,12 @@
 /**
  * Represents a template filter.
  *
- * Use Twig_SimpleFilter instead.
- *
- * @author Fabien Potencier <fabien@symfony.com>
- * @deprecated since 1.12 (to be removed in 2.0)
+ * @package    twig
+ * @author     Fabien Potencier <fabien@symfony.com>
  */
-abstract class Twig_Filter implements Twig_FilterInterface, Twig_FilterCallableInterface
+abstract class Twig_Filter implements Twig_FilterInterface
 {
     protected $options;
-    protected $arguments = array();
 
     public function __construct(array $options = array())
     {
@@ -28,19 +25,7 @@ abstract class Twig_Filter implements Twig_FilterInterface, Twig_FilterCallableI
             'needs_environment' => false,
             'needs_context'     => false,
             'pre_escape'        => null,
-            'preserves_safety'  => null,
-            'callable'          => null,
         ), $options);
-    }
-
-    public function setArguments($arguments)
-    {
-        $this->arguments = $arguments;
-    }
-
-    public function getArguments()
-    {
-        return $this->arguments;
     }
 
     public function needsEnvironment()
@@ -62,20 +47,12 @@ abstract class Twig_Filter implements Twig_FilterInterface, Twig_FilterCallableI
         if (isset($this->options['is_safe_callback'])) {
             return call_user_func($this->options['is_safe_callback'], $filterArgs);
         }
-    }
 
-    public function getPreservesSafety()
-    {
-        return $this->options['preserves_safety'];
+        return array();
     }
 
     public function getPreEscape()
     {
         return $this->options['pre_escape'];
-    }
-
-    public function getCallable()
-    {
-        return $this->options['callable'];
     }
 }

@@ -12,14 +12,6 @@
 <body class="<?php echo semantic_body_classes() ?>">
 <?php echo javascript_tag("
   var userCulture = '".$sf_user->getCulture()."';
-  var userCompany = '".$sf_user->getAttribute('company_id')."';
-    function changeCompany(obj){
-        //Convert to jQuery
-            obj = $(obj);
-            if(obj.val() != userCompany)
-               location.href = '".url_for("@change_company")."?id='+obj.val();
-}
-
 "); ?>
 <div id="hd">
   <div id="hd-top">
@@ -33,26 +25,12 @@
     <ul id="hd-top-menu" class="inline content">
       <li><?php echo __('Welcome, [1]!', array('[1]' => $sf_user->getUsername())) ?> |</li>
       <!--<li><?php // echo link_to(__('Help'), '@homepage') ?> |</li>-->
-      <?php include_component('products', 'checkStock') ?>
-      <li>
-          <?php echo __('Current Company:') ?>
-          <select id="session_company" name="session_company" onchange="javascript:changeCompany(this);">
-          <?php foreach ($sf_user->getAttribute('available_companies') as $company): ?>
-             <?php 
-                $selected = $company['id'] == $sf_user->getAttribute('company_id') ? 'selected=true' : '';
-                echo '<option '.$selected.' value="'.$company['id'].'">'.$company['name'].'</option>' ;
-             ?>
-          <?php endforeach ?>
-         </select> |
-      </li>
-
       <li><?php echo link_to(__('Settings'), 'configuration/settings', array('accesskey' => "s")) ?> |</li>
       <li><?php echo link_to(__('Logout'), '@sf_guard_signout') ?></li>
     </ul>
-  </div>
     
     <?php include_partial('global/notifications') ?>
-</div>
+  </div>
   
    <div id="hd-navbar" class="content">
    <?php 
@@ -60,7 +38,8 @@
       $tab            = $sf_request->getParameter('tab');
       $active         = 'class="active"';
       $siwapp_modules = array();
-      $modules_info   = sfConfig::get('app_modules_mandatory');
+      $modules_info   = array_merge(sfConfig::get('app_modules_mandatory'),
+                                    sfConfig::get('app_modules_optional'));
       foreach($sf_user->getAttribute('siwapp_modules') as $sm) 
       { 
         $prps = $modules_info[$sm];

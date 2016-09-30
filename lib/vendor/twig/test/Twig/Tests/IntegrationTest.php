@@ -9,30 +9,73 @@
  * file that was distributed with this source code.
  */
 
-// This function is defined to check that escaping strategies
-// like html works even if a function with the same name is defined.
-function html()
+class Twig_Tests_IntegrationTest extends PHPUnit_Framework_TestCase
 {
-    return 'foo';
-}
-
-class Twig_Tests_IntegrationTest extends Twig_Test_IntegrationTestCase
-{
-    public function getExtensions()
+    public function getTests()
     {
-        $policy = new Twig_Sandbox_SecurityPolicy(array(), array(), array(), array(), array());
+        $fixturesDir = realpath(dirname(__FILE__).'/Fixtures/');
+        $tests = array();
 
-        return array(
-            new Twig_Extension_Debug(),
-            new Twig_Extension_Sandbox($policy, false),
-            new Twig_Extension_StringLoader(),
-            new TwigTestExtension(),
-        );
+        foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator($fixturesDir), RecursiveIteratorIterator::LEAVES_ONLY) as $file) {
+            if (!preg_match('/\.test$/', $file)) {
+                continue;
+            }
+
+            $test = file_get_contents($file->getRealpath());
+
+            if (!preg_match('/--TEST--\s*(.*?)\s*((?:--TEMPLATE(?:\(.*?\))?--(?:.*?))+)--DATA--.*?--EXPECT--.*/s', $test, $match)) {
+                throw new InvalidArgumentException(sprintf('Test "%s" is not valid.', str_replace($fixturesDir.'/', '', $file)));
+            }
+
+            $message = $match[1];
+            $templates = array();
+            preg_match_all('/--TEMPLATE(?:\((.*?)\))?--(.*?)(?=\-\-TEMPLATE|$)/s', $match[2], $matches, PREG_SET_ORDER);
+            foreach ($matches as $match) {
+                $templates[($match[1] ? $match[1] : 'index.twig')] = $match[2];
+            }
+
+            $tests[] = array(str_replace($fixturesDir.'/', '', $file), $test, $message, $templates);
+        }
+
+        return $tests;
     }
 
-    public function getFixturesDir()
+    /**
+     * @dataProvider getTests
+     */
+    public function testIntegration($file, $test, $message, $templates)
     {
-        return dirname(__FILE__).'/Fixtures/';
+        $loader = new Twig_Loader_Array($templates);
+        $twig = new Twig_Environment($loader, array('cache' => false));
+        $twig->addExtension(new Twig_Extension_Escaper());
+        $twig->addExtension(new TestExtension());
+
+        try {
+            $template = $twig->loadTemplate('index.twig');
+        } catch (Twig_Error_Syntax $e) {
+            $e->setTemplateFile($file);
+
+            throw $e;
+        } catch (Exception $e) {
+            throw new Twig_Error($e->getMessage().' (in '.$file.')');
+        }
+
+        preg_match_all('/--DATA--(.*?)--EXPECT--(.*?)(?=\-\-DATA\-\-|$)/s', $test, $matches, PREG_SET_ORDER);
+        foreach ($matches as $match) {
+            $output = trim($template->render(eval($match[1].';')), "\n ");
+            $expected = trim($match[2], "\n ");
+
+            if ($expected != $output)  {
+                echo 'Compiled template that failed:';
+
+                foreach (array_keys($templates) as $name)  {
+                    echo "Template: $name\n";
+                    $source = $loader->getSource($name);
+                    echo $twig->compile($twig->parse($twig->tokenize($source, $name)));
+                }
+            }
+            $this->assertEquals($expected, $output, $message.' (in '.$file.')');
+        }
     }
 }
 
@@ -41,12 +84,9 @@ function test_foo($value = 'foo')
     return $value;
 }
 
-class TwigTestFoo implements Iterator
+class Foo
 {
     const BAR_NAME = 'bar';
-
-    public $position = 0;
-    public $array = array(1, 2);
 
     public function bar($param1 = null, $param2 = null)
     {
@@ -82,89 +122,25 @@ class TwigTestFoo implements Iterator
     {
         return strtolower($value);
     }
-
-    public function rewind()
-    {
-        $this->position = 0;
-    }
-
-    public function current()
-    {
-        return $this->array[$this->position];
-    }
-
-    public function key()
-    {
-        return 'a';
-    }
-
-    public function next()
-    {
-        ++$this->position;
-    }
-
-    public function valid()
-    {
-        return isset($this->array[$this->position]);
-    }
 }
 
-class TwigTestTokenParser_§ extends Twig_TokenParser
+class TestExtension extends Twig_Extension
 {
-    public function parse(Twig_Token $token)
-    {
-        $this->parser->getStream()->expect(Twig_Token::BLOCK_END_TYPE);
-
-        return new Twig_Node_Print(new Twig_Node_Expression_Constant('§', -1), -1);
-    }
-
-    public function getTag()
-    {
-        return '§';
-    }
-}
-
-class TwigTestExtension extends Twig_Extension
-{
-    public function getTokenParsers()
-    {
-        return array(
-            new TwigTestTokenParser_§(),
-        );
-    }
-
     public function getFilters()
     {
         return array(
-            new Twig_SimpleFilter('§', array($this, '§Filter')),
-            new Twig_SimpleFilter('escape_and_nl2br', array($this, 'escape_and_nl2br'), array('needs_environment' => true, 'is_safe' => array('html'))),
-            new Twig_SimpleFilter('nl2br', array($this, 'nl2br'), array('pre_escape' => 'html', 'is_safe' => array('html'))),
-            new Twig_SimpleFilter('escape_something', array($this, 'escape_something'), array('is_safe' => array('something'))),
-            new Twig_SimpleFilter('preserves_safety', array($this, 'preserves_safety'), array('preserves_safety' => array('html'))),
-            new Twig_SimpleFilter('*_path', array($this, 'dynamic_path')),
-            new Twig_SimpleFilter('*_foo_*_bar', array($this, 'dynamic_foo')),
+            'escape_and_nl2br' => new Twig_Filter_Method($this, 'escape_and_nl2br', array('needs_environment' => true, 'is_safe' => array('html'))),
+            'nl2br' => new Twig_Filter_Method($this, 'nl2br', array('pre_escape' => 'html', 'is_safe' => array('html'))),
+            'escape_something' => new Twig_Filter_Method($this, 'escape_something', array('is_safe' => array('something'))),
         );
     }
 
     public function getFunctions()
     {
         return array(
-            new Twig_SimpleFunction('§', array($this, '§Function')),
-            new Twig_SimpleFunction('safe_br', array($this, 'br'), array('is_safe' => array('html'))),
-            new Twig_SimpleFunction('unsafe_br', array($this, 'br')),
-            new Twig_SimpleFunction('*_path', array($this, 'dynamic_path')),
-            new Twig_SimpleFunction('*_foo_*_bar', array($this, 'dynamic_foo')),
+            'safe_br' => new Twig_Function_Method($this, 'br', array('is_safe' => array('html'))),
+            'unsafe_br' => new Twig_Function_Method($this, 'br'),
         );
-    }
-
-    public function §Filter($value)
-    {
-        return "§{$value}§";
-    }
-
-    public function §Function($value)
-    {
-        return "§{$value}§";
     }
 
     /**
@@ -185,22 +161,7 @@ class TwigTestExtension extends Twig_Extension
         return str_replace("\n", "$sep\n", $value);
     }
 
-    public function dynamic_path($element, $item)
-    {
-        return $element.'/'.$item;
-    }
-
-    public function dynamic_foo($foo, $bar, $item)
-    {
-        return $foo.'/'.$bar.'/'.$item;
-    }
-
     public function escape_something($value)
-    {
-        return strtoupper($value);
-    }
-
-    public function preserves_safety($value)
     {
         return strtoupper($value);
     }
@@ -212,6 +173,6 @@ class TwigTestExtension extends Twig_Extension
 
     public function getName()
     {
-        return 'integration_test';
+        return 'test';
     }
 }

@@ -1,27 +1,22 @@
 <?php use_helper('Text') ?>
 
 <div id="invoice-container" class="content">
-
+  
   <h2><?php echo __("Invoice") . ' ' . $invoice ?></h2>
-  <div id="saving-options">
-    <?php echo gButton_to_function(__('Print'), "Tools.popup(siwapp_urls.printHtml + '?ids[]=".$invoice->getId()."')", 'class=action print') ?>
-    <?php echo gButton_to_function(__('PDF'), "window.location=siwapp_urls.printPdf + '?ids[]=".$invoice->getId()."'", 'class=action pdf') ?>
-    <?php echo gButton_to(__('Send'), 'invoices/send?id=' .$invoice->getId(), 'class=action send') ?>
-    <?php echo gButton_to(__('Edit'), 'invoices/edit?id=' .$invoice->getId(), 'class=action edit');  ?>
-  </div>
+
   <div class="invoice show">
 
     <div id="customer-data" class="global-data block">
-      <h3><?php echo __('Customer info') ?></h3>
+      <h3><?php echo __('Client info') ?></h3>
       <ul>
         <li>
           <span>
             <span class="_50">
-              <label><?php echo __('Name/Legal Name') ?>:</label>
+              <label><?php echo __('Customer') ?>:</label>
               <?php echo $invoice->getCustomerName() ?>
             </span>
             <span class="_50 _last">
-              <label><?php echo __('Legal Id') ?>:</label>
+              <label><?php echo __('Customer identification') ?>:</label>
               <?php echo $invoice->getCustomerIdentification() ?>
             </span>
           </span>
@@ -30,21 +25,8 @@
         <li>
           <span>
             <span class="_50">
-              <label><?php echo __('Business Name') ?>:</label>
-              <?php echo $invoice->getCustomerBusinessName() ?>
-            </span>
-            <span class="_50 _last">
-              <label><?php echo __('Tax condition') ?>:</label>
-              <?php echo ($invoice->getCustomerTaxCondition() == "") ?  "-" : $invoice->getCustomerTaxCondition(); ?>
-            </span>
-          </span>
-          <span class="clear"></span>
-        </li>
-        <li>
-          <span>
-            <span class="_50">
-              <label><?php echo __('Phone') ?>:</label>
-              <?php echo $invoice->getCustomerPhone() ?>
+              <label><?php echo __('Contact person') ?>:</label>
+              <?php echo $invoice->getContactPerson() ?>
             </span>
             <span class="_50 _last">
               <label><?php echo __('Email') ?>:</label>
@@ -57,10 +39,10 @@
           <span>
             <span class="_50">
               <label><?php echo __('Invoicing address') ?>:</label>
-<?php echo simple_format_text($invoice->getInvoicingAddress().'<br>'.$invoice->getInvoicingPostalcode().' '.$invoice->getInvoicingCity().'<br>'.$invoice->getInvoicingState().' '.$invoice->getInvoicingCountry()) ?></span>
+              <?php echo simple_format_text($invoice->getInvoicingAddress()) ?></span>
             <span class="_50 _last">
               <label><?php echo __('Shipping address') ?>:</label>
-<?php echo simple_format_text($invoice->getShippingAddress().'<br>'.$invoice->getShippingPostalcode().' '.$invoice->getShippingCity().'<br>'.$invoice->getShippingState().' '.$invoice->getShippingCountry()) ?>
+              <?php echo simple_format_text($invoice->getShippingAddress()) ?>
             </span>
           </span>
           <span class="clear"></span>
@@ -105,29 +87,18 @@
         </tbody>
         <tfoot id="global_calculations">
           <tr>
-            <td colspan="4" rowspan="7" class="noborder"></td>
+            <td colspan="4" rowspan="4" class="noborder"></td>
             <td><?php echo __('Subtotal') ?></td>
             <td id="td_subtotal" class="right">
               <?php echo format_currency($invoice->getNetAmount(), $currency) ?>
             </td>
           </tr>
-          <?php foreach ($invoice->getBasesDetails() as $name => $amount): ?>
           <tr>
-            <td><?php echo __('Base')." ".$name ?></td>
-            <td class="right">
-              <?php echo format_currency($amount, $currency) ?>
+            <td><?php echo __('Taxes') ?></td>
+            <td id="td_total_taxes" class="right">
+              <?php echo format_currency($invoice->getTaxAmount(), $currency) ?>
             </td>
           </tr>
-          <?php endforeach ?>
-	  
-          <?php foreach ($invoice->getTaxDetails() as $name => $amount): ?>
-          <tr>
-	    
-            <td><?php echo __('Total')." ".$name ?></td>
-            <td class="right"><?php echo format_currency($amount,$currency)?></td>
-          </tr>
-	  
-          <?php endforeach ?>
           <tr>
             <td><?php echo __('Discount') ?></td>
             <td id="td_global_discount" class="right">
@@ -144,31 +115,8 @@
       </table>
     </div>  <!-- div#payment-data -->
 
-    <div id="other_info-data">
-      <div class="block">
-        <h3><?php echo __('Buy order number') ?></h3>
-        <div class="textarea">
-          <?php echo $invoice->getBuyOrderNumber() ?>
-        </div>
-      </div>
-
-      <div class="block">
-        <h3><?php echo __('Delivery note number') ?></h3>
-        <div class="textarea">
-          <?php echo $invoice->getDeliveryNoteNumber() ?>
-        </div>
-      </div>
-    </div>
-    
-    <div id="shipping_company-data" class="block">
-      <h3><?php echo __('Shipping Company Data') ?></h3>
-      <div class="textarea">
-        <?php echo $invoice->getShippingCompanyData(); ?>
-      </div>
-    </div>
-    
     <div id="terms-data">
-    
+
       <?php if (strlen($invoice->getTerms())): ?>
         <div class="block">
           <h3><?php echo __('Terms & Conditions') ?></h3>
@@ -209,11 +157,9 @@
 
   <div id="saving-options">
     <?php echo gButton_to_function(__('Print'), "Tools.popup(siwapp_urls.printHtml + '?ids[]=".$invoice->getId()."')", 'class=action print') ?>
-    <?php echo gButton_to_function(__('PDF'), "window.location=siwapp_urls.printPdf + '?ids[]=".$invoice->getId()."'", 'class=action pdf') ?>
-    <?php if ($sf_user->hasCredential("can_send_invoices")) {
-            echo gButton_to(__('Send'), 'invoices/send?id=' .$invoice->getId(), 'class=action send');
-          } ?>
+    <?php echo gButton_to_function(__('Save PDF'), "window.location=siwapp_urls.printPdf + '?ids[]=".$invoice->getId()."'", 'class=action pdf') ?>
+    <?php echo gButton_to(__('Send'), 'invoices/send?id=' .$invoice->getId(), 'class=action send') ?>
     <?php echo gButton_to(__('Edit'), 'invoices/edit?id=' .$invoice->getId(), 'class=action edit');  ?>
   </div>
-
+  
 </div>

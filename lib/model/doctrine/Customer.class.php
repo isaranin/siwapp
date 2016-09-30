@@ -16,24 +16,13 @@ class Customer extends BaseCustomer
    **/
   public function setDataFrom($obj)
   {
-    $this->setCompany($obj->getCompany());
     $this->setName($obj->getCustomerName());
     $this->setNameSlug(CustomerTable::slugify($obj->getCustomerName()));
     $this->setIdentification($obj->getCustomerIdentification());
-    $this->setPhone($obj->getCustomerPhone());
-    $this->setFax($obj->getCustomerFax());
     $this->setEmail($obj->getCustomerEmail());
     $this->setContactPerson($obj->getContactPerson());
     $this->setInvoicingAddress($obj->getInvoicingAddress());
-    $this->setInvoicingCity($obj->getInvoicingCity());
-    $this->setInvoicingPostalcode($obj->getInvoicingPostalcode());
-    $this->setInvoicingState($obj->getInvoicingState());
-    $this->setInvoicingCountry($obj->getInvoicingCountry());
     $this->setShippingAddress($obj->getShippingAddress());
-    $this->setShippingCity($obj->getShippingCity());
-    $this->setShippingPostalcode($obj->getShippingPostalcode());
-    $this->setShippingState($obj->getShippingState());
-    $this->setShippingCountry($obj->getShippingCountry());
     
     return $this;
   }

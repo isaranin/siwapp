@@ -10,7 +10,7 @@
 class RecurringInvoiceForm extends CommonForm
 {
 
-  public function configure($expense = false)
+  public function configure()
   {
     unset($this['created_at'],$this['updated_at'],$this['occurrences'],$this['last_execution_date'],
           $this['desync'], $this['closed']);
@@ -60,7 +60,6 @@ class RecurringInvoiceForm extends CommonForm
       ));
     
     parent::configure();
-    $this->validatorSchema['payment_type_id'] = new sfValidatorString(array('required' => true));
   }
 
   public function getModelName()

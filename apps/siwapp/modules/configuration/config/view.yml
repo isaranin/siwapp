@@ -2,14 +2,6 @@ all:
   javascripts: []
 settingsSuccess:
   javascripts:
-    - invoice
-    - siwapp/settings/global.js
-    - js-digito-control-calculator/calcularDC.js
-productsSettingsSuccess:
-  javascripts:
-    - siwapp/settings/categories.js
-expensesSettingsSuccess:
-  javascripts:
     - siwapp/settings/global.js
 profileSuccess:
   javascripts:

@@ -14,26 +14,18 @@ class EstimateForm extends BaseEstimateForm
    * @see CommonForm
    */
   
-  public function configure($expense = false)
+  public function configure()
   {
-    unset($this['number'], $this['due_date'], $this['closed'], $this['created_at'], $this['updated_at'], $this['series_id']);
+    unset($this['number'], $this['due_date'], $this['closed'], $this['created_at'], $this['updated_at']);
     
     $this->widgetSchema['issue_date'] = new sfWidgetFormI18nJQueryDate($this->JQueryDateOptions);
     $this->widgetSchema['draft'] = new sfWidgetFormInputHidden();
     $this->widgetSchema['status'] = new sfWidgetFormChoice(array('choices'=>Estimate::getStatusArray()));
     
-    $companyObject = new Company();
-    $companyObject = $companyObject->loadById(sfContext::getInstance()->getUser()->getAttribute('company_id'));
-    $this->setDefault('terms', $companyObject->getEstimateLegalTerms());
-    
     $this->widgetSchema->setNameFormat('invoice[%s]');
 
-    parent::configure();
+    $this->setDefaults(array('draft'=>0));
 
-    $this->setDefault('draft',0);
-    $this->setDefault('issue_date' , time());
-    $this->setDefault('status', 2);
-    $this->setDefault('company_id',sfContext::getInstance()->getUser()->getAttribute('company_id') );
-    $this->validatorSchema['series_id']= new sfValidatorPass();
+    parent::configure();
   }
 }

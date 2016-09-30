@@ -4,8 +4,7 @@ class TaxesForm extends FormsContainer
 {
   public function __construct($options = array(), $CSRFSecret = null)
   {
-    $this->old_taxes = Doctrine::getTable('Tax')->createQuery()
-    ->where('company_id = ?', sfContext::getInstance()->getUser()->getAttribute('company_id'))->execute();
+    $this->old_taxes = Doctrine::getTable('Tax')->findAll();
       
     $forms = array();
     foreach ($this->old_taxes as $tax)

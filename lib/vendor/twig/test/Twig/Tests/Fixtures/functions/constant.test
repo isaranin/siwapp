@@ -1,10 +1,12 @@
 --TEST--
-"constant" function
+"constant" filter
 --TEMPLATE--
-{{ constant('DATE_W3C') == expect ? 'true' : 'false' }}
-{{ constant('ARRAY_AS_PROPS', object) }}
+{{ date|date(constant('DATE_W3C')) }}
 --DATA--
-return array('expect' => DATE_W3C, 'object' => new ArrayObject(array('hi')));
+$d = date_default_timezone_get();
+date_default_timezone_set('UTC');
+$ret = array('date' => strtotime('2005-10-15 10:00:01'));
+date_default_timezone_set($d);
+return $ret;
 --EXPECT--
-true
-2
+2005-10-15T10:00:01+00:00

@@ -25,10 +25,7 @@ abstract class BaseProfileForm extends BaseFormDoctrine
       'country'            => new sfWidgetFormInputText(),
       'search_filter'      => new sfWidgetFormInputText(),
       'series'             => new sfWidgetFormInputText(),
-      'time_to_due'        => new sfWidgetFormInputText(),
-      'min_stock_level'    => new sfWidgetFormInputText(),
       'hash'               => new sfWidgetFormInputText(),
-      'created_by_user_id' => new sfWidgetFormInputText(),
     ));
 
     $this->setValidators(array(
@@ -42,10 +39,7 @@ abstract class BaseProfileForm extends BaseFormDoctrine
       'country'            => new sfValidatorString(array('max_length' => 2, 'required' => false)),
       'search_filter'      => new sfValidatorString(array('max_length' => 30, 'required' => false)),
       'series'             => new sfValidatorString(array('max_length' => 50, 'required' => false)),
-      'time_to_due'        => new sfValidatorString(array('max_length' => 10, 'required' => false)),
-      'min_stock_level'    => new sfValidatorInteger(array('required' => false)),
       'hash'               => new sfValidatorString(array('max_length' => 50, 'required' => false)),
-      'created_by_user_id' => new sfValidatorInteger(array('required' => false)),
     ));
 
     $this->validatorSchema->setPostValidator(

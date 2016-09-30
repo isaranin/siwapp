@@ -21,13 +21,13 @@ class paymentsActions extends sfActions
       $data = $request->getParameter('payments');
       
       $form = new PaymentsForm($request->getParameter('invoice_id'));
-
       $form->bind($data);
+      
       if ($form->isValid())
       {
         $form->save();
         // now recalculate totals
-        $invoice = Doctrine::getTable('Common')->find($request->getParameter('invoice_id'));
+        $invoice = Doctrine::getTable('Invoice')->find($request->getParameter('invoice_id'));
         $invoice->refresh(true)->setAmounts()->save();
         $this->getUser()->info($i18n->__('Payments were saved successfully.'));
       }
@@ -43,16 +43,15 @@ class paymentsActions extends sfActions
     }
     else
     {
-      $this->forward404Unless($invoice = Doctrine::getTable('Common')->find($request->getParameter('invoice_id')));
-      $invoice = Doctrine::getTable('Common')->find($request->getParameter('invoice_id'));
-
+      $this->forward404Unless($invoice = Doctrine::getTable('Invoice')->find($request->getParameter('invoice_id')));
+      
       $form = new PaymentsForm($request->getParameter('invoice_id'), array(
         'culture' => $this->getUser()->getCulture()
         ));
 
       return $this->renderPartial('payments/form', array(
         'form' => $form, 
-        'invoice_id' => $request->getParameter('invoice_id'),
+        'invoice_id' => $request->getParameter('invoice_id')
         ));
     }
   }
@@ -61,12 +60,10 @@ class paymentsActions extends sfActions
   {
     $this->forward404Unless($index = $request->getParameter('index'));
     $payment = new Payment();
-    $payment->setCompanyId(sfContext::getInstance()->getUser()->getAttribute('company_id'));
     $payment->setInvoiceId($request->getParameter('invoice_id'));
-    $invoice = Doctrine::getTable('Common')->find($request->getParameter('invoice_id'));
-    $payment->setAmount($invoice->getGrossAmount() - $invoice->getPaidAmount());
+    
     // insert a PaymentForm with csrf protection disabled 
-    $form = new PaymentForm($payment, array('culture'=>$this->getUser()->getCulture(), 'default_payment_type_id' => $invoice->getPaymentTypeId()), false);
+    $form = new PaymentForm($payment, array('culture'=>$this->getUser()->getCulture()), false);
     $form->getWidgetSchema()->setNameFormat('payments[new_'.$index.'][%s]');
     
     return $this->renderText('<li><ul><a href="#" class="xit"/>'.$form.'</ul></li>');

@@ -21,17 +21,15 @@ class commonActions extends sfActions
   {
     $currency = PropertyTable::get('currency');
     $format   = new sfNumberFormat($this->culture);
-
+    
     $data = $request->getParameter('invoice');
-    if(!isset($data))
-        $data = $request->getParameter('expense');
     $this->getResponse()->setHttpHeader('Content-Type', 'application/json; charset=utf-8');
 
     $invoice = new Invoice();
-
+    
     $items  = array();
     $totals = array();
-
+    
     if (isset($data['Items']))
     {
       foreach ((array) $data['Items'] as $itemId => $itemData)
@@ -44,18 +42,18 @@ class commonActions extends sfActions
         $item->setUnitaryCost($itemData['unitary_cost']);
         $item->setQuantity($itemData['quantity']);
         $item->setDiscount($itemData['discount']);
-
+        
         if (isset($itemData['taxes_list']))
         {
           $taxes = Doctrine::getTable('Tax')->createQuery()->whereIn('id', $itemData['taxes_list'])->execute();
           $item->Taxes = $taxes;
         }
-
-        $items[$itemId] = $format->format($item->getNetAmount(), 'c', $currency);
+        
+        $items[$itemId] = $format->format($item->getGrossAmount(), 'c', $currency);
 
         $invoice->Items[] = $item;
       }
-
+      
       $totals['base']     = $format->format($invoice->calculate('base_amount',true), 'c', $currency);
       $totals['discount'] = $format->format($invoice->calculate('discount_amount',true), 'c', $currency);
       $totals['net']      = $format->format($invoice->calculate('net_amount',true), 'c', $currency);
@@ -65,17 +63,17 @@ class commonActions extends sfActions
     else
     {
       $zero = $format->format(0, 'c', $currency);
-
+      
       $totals['base']     = $zero;
       $totals['discount'] = $zero;
       $totals['net']      = $zero;
       $totals['taxes']    = $zero;
       $totals['gross']    = $zero;
     }
-
+    
     return $this->renderText(json_encode(array('items' => $items, 'totals' => $totals)));
   }
-
+  
   /**
    * AJAX action to add new invoice items
    * @param sfWebRequest $request
@@ -97,29 +95,7 @@ class commonActions extends sfActions
                     );
     return $this->renderPartial('invoiceRow', $params);
   }
-
-   /**
-   * AJAX action to add new invoice items
-   * @param sfWebRequest $request
-   * @return unknown_type
-   */
-  public function executeAjaxAddExpenseItem(sfWebRequest $request)
-  {
-    $index = 'new_item_invoice_'.time();
-    $item = new Item();
-    $item->common_id = $request->getParameter('expense_id');
-    $form = new sfForm();
-    $form->getWidgetSchema()->setNameFormat('expense[%s]');
-    $form->embedForm('Items', new FormsContainer(array($index=>new ItemForm($item)), 'ItemForm'));
-    $params = array(
-                    'invoiceItemForm' => $form['Items'][$index],
-                    'item'            => $item,
-                    'isNew'           => true,
-                    'rowId'           => $index
-                    );
-    return $this->renderPartial('expenseRow', $params);
-  }
-
+  
   public function executeAjaxAddInvoiceItemTax($request)
   {
     $taxIndex = $request->getParameter('item_tax_index');
@@ -129,23 +105,10 @@ class commonActions extends sfActions
 
     $this->rowId  = $invoiceItemKey;
     $this->setTemplate('_tax');
-
+    
     return 'Span';
   }
-
-  public function executeAjaxAddExpenseItemTax($request)
-  {
-    $taxIndex = $request->getParameter('item_tax_index');
-    $invoiceItemKey = $request->getParameter('invoice_item_key');
-    $selected_tax   = $request->getParameter('selected_tax',null);
-    $this->taxKey = $selected_tax ? $selected_tax : 'new_'.$taxIndex;
-
-    $this->rowId  = $invoiceItemKey;
-    $this->setTemplate('_taxExpense');
-
-    return 'Span';
-  }
-
+  
   /**
    * ajax action for invoice items autocompletion
    *
@@ -155,14 +118,14 @@ class commonActions extends sfActions
   public function executeAjaxInvoiceItemsAutocomplete(sfWebRequest $request)
   {
     $this->getResponse()->setContentType('application/json');
-    $items = Doctrine::getTable('Product')
+    $items = Doctrine::getTable('Item')
       ->retrieveForSelect($request->getParameter('q'), $request->getParameter('limit'));
 
     return $this->renderText(json_encode($items));
   }
 
-
-
+  
+  
   /**
    * ajax action for customer name autocompletion
    *
@@ -178,23 +141,7 @@ class commonActions extends sfActions
 
     return $this->renderText(json_encode($items));
   }
-
-    /**
-   * ajax action for supplier name autocompletion
-   *
-   * @return JSON
-   * @author Sergi Almacellas
-   **/
-  public function executeAjaxSupplierAutocomplete(sfWebRequest $request)
-  {
-    $this->getResponse()->setContentType('application/json');
-    $q = $request->getParameter('q');
-    $items = Doctrine::getTable('Supplier')
-      ->retrieveForSelect($request->getParameter('q'), $request->getParameter('limit'));
-
-    return $this->renderText(json_encode($items));
-  }
-
+  
   /**
    * ajax action for tags autocompletion
    *
@@ -205,47 +152,16 @@ class commonActions extends sfActions
   {
     $this->getResponse()->setContentType('application/json');
     $q = $request->getParameter('q');
-    $limit = $request->getParameter('limit');
-    $items = Doctrine::getTable('Tag')->createQuery()->where('company_id = ?', sfContext::getInstance()->getUser()->getAttribute('company_id'))->AndWhere('name like ?', "%$q%")->limit($limit)->execute();
-
+    $limit = $request->getParameter('limit'); 
+    $items = Doctrine::getTable('Tag')->createQuery()->where('name like ?', "%$q%")->limit($limit)->execute();
+    
     $res = array();
     foreach ($items as $item)
     {
       $res[$item->getName()] = $item->getName();
     }
-
+    
     return $this->renderText(json_encode($res));
-  }
-  
-  public function executeCheckProductsStock(sfWebRequest $request)
-  {
-    $i18n = $this->getContext()->getI18N();
-    $data = $request->getParameter('invoice');
-    $this->getResponse()->setHttpHeader('Content-Type', 'application/json; charset=utf-8');
-    
-    $outOfStock  = array();
-    
-    if (isset($data['Items']))
-    {
-      foreach ((array) $data['Items'] as $itemId => $itemData)
-      {
-        if($itemData['remove'])
-        {
-          continue;
-        }
-        $product = Doctrine::getTable('Product')->find($itemData['product_id']);
-        if ($product && !is_null($product->getStock()) && ((int) $itemData['quantity'] > $product->getStock())){
-          $outOfStock[$product->getReference()."-"."'".$product->getDescription()."'"] = $product->getStock();
-        }
-      }
-      
-      $message['title'] = $i18n->__('Warning');
-      $message['body'] = $i18n->__('Stock limit overloaded for the following product').": <code>%s</code>. ".$i18n->__('Current stock: %s units.');
-    } else {
-      return null;
-    }
-    
-    return $this->renderText(json_encode(array('outOfStock' => $outOfStock, 'message' => $message)));
   }
   
 }

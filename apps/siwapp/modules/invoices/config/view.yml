@@ -9,10 +9,7 @@ indexSuccess:
     - siwapp/invoices/payments.js
 
 editSuccess:
-  stylesheets:
-    - /sfFormExtraPlugin/css/jquery.autocompleter.css
-    - ui-orange/ui.all.css:   { media: all }
-    - jquery.dialog.css
+  stylesheets: [ /sfFormExtraPlugin/css/jquery.autocompleter.css ]
   javascripts:
     - core/json2
     - core/form
@@ -21,5 +18,3 @@ editSuccess:
     - invoice
     - tags
     - jquery.textarearesizer.compressed.js
-    - sprintf.js
-    - alert.js

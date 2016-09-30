@@ -4,6 +4,7 @@ class RecurringInvoiceSearchForm extends BaseForm
   public function configure()
   {
     $this->setWidgets(array(
+      'query'     => new sfWidgetFormInputText(),
       'series_id' => new sfWidgetFormChoice(array('choices' => 
         array(''=>'') + SeriesTable::getChoicesForSelect(false))),
       'period_type' => new sfWidgetFormChoice(array('choices' => 
@@ -13,6 +14,7 @@ class RecurringInvoiceSearchForm extends BaseForm
     ));
     
     $this->widgetSchema->setLabels(array(
+      'query'  => 'Search',
       'series' => 'Series',
     ));
     
@@ -21,6 +23,7 @@ class RecurringInvoiceSearchForm extends BaseForm
     );
     
     $this->setValidators(array(
+      'query'   => new sfValidatorString(array('required' => false, 'trim' => true)),
       'series'  => new sfValidatorString(array('required' => false, 'trim' => true)),
       'tags'    => new sfValidatorString(array('required' => false, 'trim' => true)),
       'status'  => new sfValidatorString(array('required' => false, 'trim' => true)),

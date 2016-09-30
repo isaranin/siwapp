@@ -14,12 +14,12 @@ class Payment extends BasePayment
   
   public function postSave($event)
   {
-    $this->getCommon()->checkStatus()->save();
+    $this->getInvoice()->checkStatus()->save();
   }
   
   public function postDelete($event)
   {
-    $this->getCommon()->checkStatus()->save();
+    $this->getInvoice()->checkStatus()->save();
   }
   
   public function getAmount()

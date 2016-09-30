@@ -16,7 +16,6 @@ abstract class BaseTemplateForm extends BaseFormDoctrine
   {
     $this->setWidgets(array(
       'id'         => new sfWidgetFormInputHidden(),
-      'company_id' => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('Company'), 'add_empty' => true)),
       'name'       => new sfWidgetFormInputText(),
       'template'   => new sfWidgetFormTextarea(),
       'models'     => new sfWidgetFormInputText(),
@@ -27,7 +26,6 @@ abstract class BaseTemplateForm extends BaseFormDoctrine
 
     $this->setValidators(array(
       'id'         => new sfValidatorChoice(array('choices' => array($this->getObject()->get('id')), 'empty_value' => $this->getObject()->get('id'), 'required' => false)),
-      'company_id' => new sfValidatorDoctrineChoice(array('model' => $this->getRelatedModelName('Company'), 'required' => false)),
       'name'       => new sfValidatorString(array('max_length' => 255, 'required' => false)),
       'template'   => new sfValidatorString(array('required' => false)),
       'models'     => new sfValidatorString(array('max_length' => 200, 'required' => false)),
@@ -35,6 +33,10 @@ abstract class BaseTemplateForm extends BaseFormDoctrine
       'updated_at' => new sfValidatorDateTime(),
       'slug'       => new sfValidatorString(array('max_length' => 255, 'required' => false)),
     ));
+
+    $this->validatorSchema->setPostValidator(
+      new sfValidatorDoctrineUnique(array('model' => 'Template', 'column' => array('slug')))
+    );
 
     $this->widgetSchema->setNameFormat('template[%s]');
 

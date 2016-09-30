@@ -1,21 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE xliff PUBLIC "-//XLIFF//DTD XLIFF//EN" "http://www.oasis-open.org/committees/xliff/documents/xliff.dtd">
 <xliff version="1.0">
-  <file source-language="EN" target-language="ca" datatype="plaintext" original="messages" date="2012-10-17T11:22:55Z" product-name="messages">
+  <file source-language="EN" target-language="ca" datatype="plaintext" original="messages" date="2010-10-22T14:15:16Z" product-name="messages">
     <header/>
     <body>
       <!-- ##### LOGIN/OUT ##### -->
       <trans-unit>
-        <source>Login</source>
-        <target>Nom d'usuari</target>
-      </trans-unit>
-      <trans-unit>
         <source>Username</source>
-        <target>Usuari</target>
+        <target></target>
       </trans-unit>
       <trans-unit>
         <source>Password</source>
-        <target>Contrasenya</target>
+        <target>Contrassenya</target>
       </trans-unit>
       <trans-unit>
         <source>Remember me</source>
@@ -55,8 +51,8 @@
         <target>Número</target>
       </trans-unit>
       <trans-unit>
-        <source>Name/Legal Name</source>
-        <target>Nom del client</target>
+        <source>Customer Name</source>
+        <target>Nom Client</target>
       </trans-unit>
       <trans-unit>
         <source>Date</source>
@@ -146,14 +142,6 @@
       <trans-unit>
         <source>Discount</source>
         <target>Descompte</target>
-      </trans-unit>
-      <trans-unit>
-        <source>Discount Percentage</source>
-        <target>% Descompte facturació</target>
-      </trans-unit>
-      <trans-unit>
-        <source>Global Discount</source>
-        <target>Descompte global</target>
       </trans-unit>
       <trans-unit>
         <source>Price</source>
@@ -255,7 +243,7 @@
         <source>Sent by email</source>
         <target>Enviat per email</target>
       </trans-unit>
-      <trans-unit>
+       <trans-unit>
         <source>Force to be closed</source>
         <target>Forçar a ser tancada</target>
       </trans-unit>
@@ -448,63 +436,31 @@
       </trans-unit>
       <trans-unit>
         <source>Client Name</source>
-        <target>Nom del client</target>
+        <target>Nom del Client</target>
       </trans-unit>
       <trans-unit>
         <source>Client Legal Id</source>
-        <target>Identificador legal del client</target>
+        <target>Identificador legal del Client</target>
       </trans-unit>
       <trans-unit>
         <source>Client Address</source>
-        <target>Adreça del client</target>
+        <target>Adreça del Client</target>
       </trans-unit>
       <trans-unit>
         <source>Contact Person</source>
-        <target>Persona de contacte</target>
+        <target>Persona de Contacte</target>
       </trans-unit>
       <trans-unit>
         <source>Invoicing Address</source>
-        <target>Adreça de facturació</target>
-      </trans-unit>
-      <trans-unit>
-        <source>Invoicing City</source>
-        <target>Població de facturació</target>
-      </trans-unit>
-      <trans-unit>
-        <source>Invoicing Postal code</source>
-        <target>Codi postal de facturació</target>
-      </trans-unit>
-      <trans-unit>
-        <source>Invoicing State</source>
-        <target>Provincia de facturació</target>
-      </trans-unit>
-      <trans-unit>
-        <source>Invoicing Contry</source>
-        <target>Pais de facturació</target>
+        <target>Adreça de Facturació</target>
       </trans-unit>
       <trans-unit>
         <source>Shipping Address</source>
-        <target>Adreça d'enviament</target>
-      </trans-unit>
-      <trans-unit>
-        <source>Shipping City</source>
-        <target>Població d'enviament</target>
-      </trans-unit>
-      <trans-unit>
-        <source>Shipping Postal code</source>
-        <target>Codi postal d'enviament</target>
-      </trans-unit>
-      <trans-unit>
-        <source>Shipping State</source>
-        <target>Provincia d'enviament</target>
-      </trans-unit>
-      <trans-unit>
-        <source>Shipping Contry</source>
-        <target>País d'enviament</target>
+        <target>Adreça d'Enviament</target>
       </trans-unit>
       <trans-unit>
         <source>Client Email</source>
-        <target>Email del client</target>
+        <target>Email del Client</target>
       </trans-unit>
       <trans-unit>
         <source>The customer has not been saved due to some errors.</source>
@@ -561,32 +517,8 @@
         <target>darrer any</target>
       </trans-unit>
       <trans-unit>
-        <source>past month</source>
-        <target>mes anterior</target>
-      </trans-unit>
-      <trans-unit>
-        <source>past year</source>
-        <target>any anterior</target>
-      </trans-unit>
-      <trans-unit>
         <source>last 5 years</source>
         <target>darrers 5 anys</target>
-      </trans-unit>
-      <trans-unit>
-        <source>first quarter</source>
-        <target>primer trimerstre</target>
-      </trans-unit>
-      <trans-unit>
-        <source>second quarter</source>
-        <target>segon trimerstre</target>
-      </trans-unit>
-      <trans-unit>
-        <source>third quarter</source>
-        <target>tercer trimerstre</target>
-      </trans-unit>
-      <trans-unit>
-        <source>fourth quarter</source>
-        <target>quart trimerstre</target>
       </trans-unit>
       <trans-unit>
         <source>Status</source>
@@ -603,10 +535,6 @@
       <trans-unit>
         <source>Drafts</source>
         <target>Esborranys</target>
-      </trans-unit>
-      <trans-unit>
-        <source>No Drafts</source>
-        <target>No Esborranys</target>
       </trans-unit>
       <trans-unit>
         <source>Enabled</source>
@@ -770,10 +698,6 @@
       <trans-unit>
         <source>Default</source>
         <target>Predeterminat</target>
-      </trans-unit>
-      <trans-unit>
-        <source>Def.</source>
-        <target>Pred.</target>
       </trans-unit>
       <trans-unit>
         <source>Add a new tax value</source>
@@ -1092,611 +1016,15 @@
       </trans-unit>
       <trans-unit>
         <source>No selection. Nothing to do.</source>
-        <target>No s'ha seleccionat cap registre. No s'ha de fer res</target>
+        <target></target>
       </trans-unit>
       <trans-unit>
         <source>Net</source>
-        <target>Net</target>
+        <target></target>
       </trans-unit>
       <trans-unit>
         <source>%d customers could not be saved because they have associated data.</source>
-        <target>No s'han pogut guardar %d clients perquè tenen informació associada.</target>
-      </trans-unit>
-      <trans-unit id="1">
-        <source>Current Company:</source>
-        <target>Empresa actual:</target>
-      </trans-unit>
-      <trans-unit id="2">
-        <source>Expense Type</source>
-        <target>Tipus de despesa</target>
-      </trans-unit>
-      <trans-unit id="3">
-        <source>Amount</source>
-        <target>Quantitat</target>
-      </trans-unit>
-      <trans-unit id="4">
-        <source>Product</source>
-        <target>Producte</target>
-      </trans-unit>
-      <trans-unit id="5">
-        <source>Taxes Total</source>
-        <target>Total d'impostos</target>
-      </trans-unit>
-      <trans-unit id="6">
-        <source>Supplier info</source>
-        <target>Informació del proveïdor</target>
-      </trans-unit>
-      <trans-unit id="7">
-        <source>Client Phone</source>
-        <target>Telèfon del client</target>
-      </trans-unit>
-      <trans-unit id="8">
-        <source>Client Fax</source>
-        <target>Fax del client</target>
-      </trans-unit>
-      <trans-unit id="9">
-        <source>Client Email Address</source>
-        <target>Adreça e-mail del client</target>
-      </trans-unit>
-      <trans-unit id="10">
-        <source>Customer Phone</source>
-        <target>Telèfon del client</target>
-      </trans-unit>
-      <trans-unit id="11">
-        <source>Customer Fax</source>
-        <target>Fax del client</target>
-      </trans-unit>
-      <trans-unit id="12">
-        <source>Edit Estimate</source>
-        <target>Editar pressupost</target>
-      </trans-unit>
-      <trans-unit id="13">
-        <source>The estimate was successfully sent.</source>
-        <target>El pressupost s'ha enviat correctament.</target>
-      </trans-unit>
-      <trans-unit id="14">
-        <source>The estimate could not be sent due to an error.</source>
-        <target>El pressupost no s'ha pogut enviar a causa d'un error.</target>
-      </trans-unit>
-      <trans-unit id="15">
-        <source>There is a problem with estimate %s</source>
-        <target>Hi ha un problema amb el pressupost %s</target>
-      </trans-unit>
-      <trans-unit id="16">
-        <source>The estimate has not been saved due to some errors.</source>
-        <target>El pressupost no s'ha guardat a causa de alguns errors.</target>
-      </trans-unit>
-      <trans-unit id="17">
-        <source>%d estimates were successfully deleted.</source>
-        <target>S'han eliminat correctament %d pressupostos.</target>
-      </trans-unit>
-      <trans-unit id="18">
-        <source>%d estimates were successfully sent.</source>
-        <target>S'han enviat correctament %d pressupostos</target>
-      </trans-unit>
-      <trans-unit id="19">
-        <source>Supplier Name</source>
-        <target>Nom del proveïdor</target>
-      </trans-unit>
-      <trans-unit id="20">
-        <source>Supplier Legal Id</source>
-        <target>Identificador legal del proveïdor</target>
-      </trans-unit>
-      <trans-unit id="21">
-        <source>Supplier Person</source>
-        <target>Persona de contacte del proveïdor</target>
-      </trans-unit>
-      <trans-unit id="22">
-        <source>Supplier Address</source>
-        <target>Adreça del proveïdor</target>
-      </trans-unit>
-      <trans-unit id="23">
-        <source>Supplier Phone</source>
-        <target>Telèfon del proveïdor</target>
-      </trans-unit>
-      <trans-unit id="24">
-        <source>Supplier Fax</source>
-        <target>Fax del proveïdor</target>
-      </trans-unit>
-      <trans-unit id="25">
-        <source>Supplier Email Address</source>
-        <target>Adreça e-mail del proveïdor</target>
-      </trans-unit>
-      <trans-unit id="26">
-        <source>New Expense</source>
-        <target>Nova despesa</target>
-      </trans-unit>
-      <trans-unit id="27">
-        <source>Edit Expense</source>
-        <target>Editar despesa</target>
-      </trans-unit>
-      <trans-unit id="28">
-        <source>%d expenses were successfully deleted.</source>
-        <target>S'han eliminat %d despeses correctament.</target>
-      </trans-unit>
-      <trans-unit id="29">
-        <source>Expense</source>
-        <target>Despesa</target>
-      </trans-unit>
-      <trans-unit id="30">
-        <source>Supplier</source>
-        <target>Proveidor</target>
-      </trans-unit>
-      <trans-unit id="31">
-        <source>Supplier identification</source>
-        <target>Identificació del proveïdor</target>
-      </trans-unit>
-      <trans-unit id="32">
-        <source>Supplier reference</source>
-        <target>Número factura proveïdor</target>
-      </trans-unit>
-      <trans-unit id="33">
-        <source>Comments</source>
-        <target>Observacions</target>
-      </trans-unit>
-      <trans-unit id="34">
-        <source>%d customers could not be deleted because they have associated data.</source>
-        <target>No s'han pogut eliminar %d clients perquè tenen informació associaciada</target>
-      </trans-unit>
-      <trans-unit id="35">
-        <source>Company name</source>
-        <target>Nom de l'empresa</target>
-      </trans-unit>
-      <trans-unit id="36">
-        <source>Company address</source>
-        <target>Adreça de l'empresa</target>
-      </trans-unit>
-      <trans-unit id="37">
-        <source>Company email</source>
-        <target>Adreça email de l'empresa</target>
-      </trans-unit>
-      <trans-unit id="38">
-        <source>Company phone</source>
-        <target>Telèfon de l'empresa</target>
-      </trans-unit>
-      <trans-unit id="39">
-        <source>Company fax</source>
-        <target>Fax de l'empresa</target>
-      </trans-unit>
-      <trans-unit id="40">
-        <source>Company Website</source>
-        <target>Lloc web de l'empresa</target>
-      </trans-unit>
-      <trans-unit id="41">
-        <source>New Company</source>
-        <target>Nova empresa</target>
-      </trans-unit>
-      <trans-unit id="42">
-        <source>Edit Company</source>
-        <target>Editar empresa</target>
-      </trans-unit>
-      <trans-unit id="43">
-        <source>The Company could not be deleted. </source>
-        <target>L'empresa no s'ha pogut eliminar </target>
-      </trans-unit>
-      <trans-unit id="44">
-        <source>The Company has not been saved due to some errors.</source>
-        <target>L'empresa no s'ha guardat a causa d'alguns errors</target>
-      </trans-unit>
-      <trans-unit id="45">
-        <source>%d Companys were successfully deleted.</source>
-        <target>S'han eliminat %d empreses</target>
-      </trans-unit>
-      <trans-unit id="46">
-        <source>Company info</source>
-        <target>Informació de l'empresa</target>
-      </trans-unit>
-      <trans-unit id="47">
-        <source>Assigned Users</source>
-        <target>Usuaris assignats</target>
-      </trans-unit>
-      <trans-unit id="48">
-        <source>New User</source>
-        <target>Nou usuari</target>
-      </trans-unit>
-      <trans-unit id="49">
-        <source>Edit User</source>
-        <target>Editar usuari</target>
-      </trans-unit>
-      <trans-unit id="50">
-        <source>The User could not be deleted. </source>
-        <target>L'usuari no s'ha pogut eliminar</target>
-      </trans-unit>
-      <trans-unit id="51">
-        <source>The User has not been saved due to some errors.</source>
-        <target>L'usuari no s'ha guardat a causa d'alguns errors.</target>
-      </trans-unit>
-      <trans-unit id="52">
-        <source>%d Users were successfully deleted.</source>
-        <target>S'han eliminat correctament %d usuaris</target>
-      </trans-unit>
-      <trans-unit id="53">
-        <source>User Info</source>
-        <target>Informació de l'usuari</target>
-      </trans-unit>
-      <trans-unit id="54">
-        <source>Access Info:</source>
-        <target>Informació d'accés:</target>
-      </trans-unit>
-      <trans-unit id="55">
-        <source>Expenses Type</source>
-        <target>Tipus de despeses</target>
-      </trans-unit>
-      <trans-unit id="56">
-        <source>Add a new expense type</source>
-        <target>Afegir un nou tipus de despesa</target>
-      </trans-unit>
-      <trans-unit id="57">
-        <source>Payments Type</source>
-        <target>Formes de pagament</target>
-      </trans-unit>
-      <trans-unit id="58">
-        <source>Add a new payment type</source>
-        <target>Afegir una nova categoria</target>
-      </trans-unit>
-      <trans-unit id="59">
-        <source>Product Categories</source>
-        <target>Categories de producte</target>
-      </trans-unit>
-      <trans-unit id="60">
-        <source>Add a new category</source>
-        <target>Afegir una nova categoria</target>
-      </trans-unit>
-      <trans-unit id="61">
-        <source>Edit Product</source>
-        <target>Editar producte</target>
-      </trans-unit>
-      <trans-unit id="62">
-        <source>The product could not be deleted. </source>
-        <target>No s'ha pogut eliminar el producte</target>
-      </trans-unit>
-      <trans-unit id="63">
-        <source>The product has not been saved due to some errors.</source>
-        <target>El producte no s'ha pogut eliminar degut a alguns errors.</target>
-      </trans-unit>
-      <trans-unit id="64">
-        <source>%d products were successfully deleted.</source>
-        <target>S'han eliminat correctament %d productes</target>
-      </trans-unit>
-      <trans-unit id="65">
-        <source>Category: </source>
-        <target>Categoria: </target>
-      </trans-unit>
-      <trans-unit id="65">
-        <source>Category</source>
-        <target>Categoria </target>
-      </trans-unit>
-      <trans-unit id="66">
-        <source>Supplier Email</source>
-        <target>E-mail del proveïdor</target>
-      </trans-unit>
-      <trans-unit id="67">
-        <source>New Supplier</source>
-        <target>Nou proveïdor</target>
-      </trans-unit>
-      <trans-unit id="68">
-        <source>Edit Supplier</source>
-        <target>Editar proveïdor</target>
-      </trans-unit>
-      <trans-unit id="69">
-        <source>The supplier could not be deleted. </source>
-        <target>El proveïdor no s'ha pogut eliminar. </target>
-      </trans-unit>
-      <trans-unit id="70">
-        <source>The supplier has not been saved due to some errors.</source>
-        <target>El proveïdor no s'ha guardat degut a alguns errors.</target>
-      </trans-unit>
-      <trans-unit id="71">
-        <source>%d suppliers were successfully deleted.</source>
-        <target>S'han eliminat correctamnet %d proveïdors</target>
-      </trans-unit>
-      <trans-unit id="72">
-        <source>%d suppliers could not be deleted because they have associated data.</source>
-        <target>No es poden eliminar %d proveïdors perquè tenen informació associada</target>
-      </trans-unit>
-      <trans-unit id="73">
-        <source>Expenses</source>
-        <target>Despeses</target>
-      </trans-unit>
-      <trans-unit id="74">
-        <source>There must be only one template for model.</source>
-        <target>Només hi pot haver una plantilla per model</target>
-      </trans-unit>
-      <trans-unit id="75">
-        <source>Successfully saved.</source>
-        <target>Guardat correctament.</target>
-      </trans-unit>
-      <trans-unit id="76">
-        <source>Suppliers</source>
-        <target>Proveïdors</target>
-      </trans-unit>
-      <trans-unit id="77">
-        <source>COMPANIES</source>
-        <target>EMPRESES</target>
-      </trans-unit>
-      <trans-unit id="78">
-        <source>USERS</source>
-        <target>USUARIS</target>
-      </trans-unit>
-      <trans-unit id="79">
-        <source>Pending Estimates</source>
-        <target>Pressupostos pendents</target>
-      </trans-unit>
-      <trans-unit>
-        <source>Payment type</source>
-        <target>Forma de pagament</target>
-      </trans-unit>
-      <trans-unit>
-        <source>Client Mobile</source>
-        <target>Mòbil del client</target>
-      </trans-unit>
-      <trans-unit>
-        <source>Website</source>
-        <target>Lloc web</target>
-      </trans-unit>
-      <trans-unit>
-        <source>Supplier Mobile</source>
-        <target>Mòbil del proveïdor</target>
-      </trans-unit>
-      <trans-unit>
-        <source>Online Access</source>
-        <target>Dades d'accés Online</target>
-      </trans-unit>
-      <trans-unit>
-        <source>Company Legal Id</source>
-        <target>Identificació legal de l'empresa</target>
-      </trans-unit>
-      <trans-unit>
-        <source>Required.</source>
-        <target>Obligatori.</target>
-      </trans-unit>
-      <trans-unit>
-        <source>Legal Id</source>
-        <target>Identificador legal</target>
-      </trans-unit>
-      <trans-unit>
-        <source>Invoices Total</source>
-        <target>Total factures</target>
-      </trans-unit>
-      <trans-unit>
-        <source>Invoice Taxes detail</source>
-        <target>Resum impostos factures</target>
-      </trans-unit>
-      <trans-unit>
-        <source>Expenses Total</source>
-        <target>Total despeses</target>
-      </trans-unit>
-      <trans-unit>
-        <source>Expense Taxes detail</source>
-        <target>Resum impostos despeses</target>
-      </trans-unit>
-      <trans-unit>
-        <source>Profit and Loss</source>
-        <target>Resultat</target>
-      </trans-unit>
-      <trans-unit>
-        <source>Total Revenue</source>
-        <target>Total Ingresos</target>
-      </trans-unit>
-      <trans-unit>
-        <source>Total Expenses</source>
-        <target>Total Despeses</target>
-      </trans-unit>
-      <trans-unit>
-        <source>Net Profit</source>
-        <target>Total</target>
-      </trans-unit>
-      <trans-unit>
-        <source>Recived</source>
-        <target>Cobrat</target>
-      </trans-unit>
-      <trans-unit>
-        <source>Paid</source>
-        <target>Pagat</target>
-      </trans-unit>
-      <trans-unit>
-        <source>Recent expenses</source>
-        <target>Despeses recents</target>
-      </trans-unit>
-      <trans-unit>
-        <source>Global Situation</source>
-        <target>Situació global</target>
-      </trans-unit>
-      <trans-unit>
-        <source>Use for Expenses</source>
-        <target>Usar en despeses</target>
-      </trans-unit>
-      <trans-unit>
-        <source>City</source>
-        <target>Ciutat</target>
-      </trans-unit>
-      <trans-unit>
-        <source>State</source>
-        <target>Provincia</target>
-      </trans-unit>
-      <trans-unit>
-        <source>Postal code</source>
-        <target>Codi postal</target>
-      </trans-unit>
-      <trans-unit>
-        <source>Country</source>
-        <target>Pais</target>
-      </trans-unit>
-      <trans-unit>
-        <source>New password2</source>
-        <target>Repeteix contrasenya</target>
-      </trans-unit>
-      <trans-unit>
-        <source>First name</source>
-        <target>Nom</target>
-      </trans-unit>
-      <trans-unit>
-        <source>Last name</source>
-        <target>Cognoms</target>
-      </trans-unit>
-      <trans-unit>
-        <source>Period</source>
-        <target>Període</target>
-      </trans-unit>
-      <trans-unit>
-        <source>No related Estimate</source>
-        <target>Cap pressupost</target>
-      </trans-unit>
-      <trans-unit>
-        <source>Go to Estimate</source>
-        <target>Veure pressupost</target>
-      </trans-unit>
-      <trans-unit>
-        <source>Not invoiced</source>
-        <target>Cap factura</target>
-      </trans-unit>
-      <trans-unit>
-        <source>Go to Invoice</source>
-        <target>Veure factura</target>
-      </trans-unit>
-      <trans-unit>
-        <source>portrait</source>
-        <target>Vertical</target>
-      </trans-unit>
-      <trans-unit>
-        <source>landscape</source>
-        <target>Horitzontal</target>
-      </trans-unit>
-      <trans-unit>
-        <source>Mercantil registry</source>
-        <target>Registre mercantil</target>
-      </trans-unit>
-      <trans-unit>
-        <source>Bank details</source>
-        <target>Dades bancàries</target>
-      </trans-unit>
-      <trans-unit>
-        <source>IBAN</source>
-        <target>IBAN</target>
-      </trans-unit>
-      <trans-unit>
-        <source>BIC Code</source>
-        <target>Codi BIC/SWIFT</target>
-      </trans-unit>
-      <trans-unit>
-        <source>Entity</source>
-        <target>Entitat</target>
-      </trans-unit>
-      <trans-unit>
-        <source>Office</source>
-        <target>Oficina</target>
-      </trans-unit>
-      <trans-unit>
-        <source>Control digit</source>
-        <target>Dígit de control</target>
-      </trans-unit>
-      <trans-unit>
-        <source>Account</source>
-        <target>Compte corrent</target>
-      </trans-unit>
-      <trans-unit>
-        <source>Export</source>
-        <target>Exporta</target>
-      </trans-unit>
-      <trans-unit>
-        <source>Other info</source>
-        <target>Informació addicional</target>
-      </trans-unit>
-      <trans-unit>
-        <source>Mercantil Registry</source>
-        <target>Registre Mercantil</target>
-      </trans-unit>
-      <trans-unit>
-        <source>Remit</source>
-        <target>Remesar</target>
-      </trans-unit>
-      <trans-unit>
-        <source>Remit (SEPA)</source>
-        <target>Remesar (SEPA)</target>
-      </trans-unit>
-      <trans-unit>
-        <source>Postalcode</source>
-        <target>Codi Postal</target>
-      </trans-unit>
-      <trans-unit>
-        <source>Estimate</source>
-        <target>Pressupost</target>
-      </trans-unit>
-      <trans-unit>
-        <source>The customer was created successfully .</source>
-        <target>S'ha creat el client correctament.</target>
-      </trans-unit>
-      <trans-unit>
-        <source>The customer was updated successfully .</source>
-        <target>S'ha actualitzat el client correctament.</target>
-      </trans-unit>
-      <trans-unit>
-        <source>The product was created successfully .</source>
-        <target>S'ha creat el producte correctament.</target>
-      </trans-unit>
-      <trans-unit>
-        <source>The supplier was updated successfully .</source>
-        <target>S'ha actualitzat el proveïdor correctament.</target>
-      </trans-unit>
-      <trans-unit>
-        <source>The supplier was created successfully .</source>
-        <target>S'ha creat el proveïdor correctament.</target>
-      </trans-unit>
-      <trans-unit>
-        <source>The product was updated successfully .</source>
-        <target>S'ha actualitzat el producte correctament.</target>
-      </trans-unit>
-      <trans-unit>
-        <source>The expense has not been saved due to some errors.</source>
-        <target>La despesa no ha pogut ser desada.</target>
-      </trans-unit>
-      <trans-unit>
-        <source>The expense was successfully saved.</source>
-        <target>La despesa s'ha desat correctament.</target>
-      </trans-unit>
-      <trans-unit>
-        <source>The recurring invoice was created successfully.</source>
-        <target>La factura recurrent s'ha desat correctament.</target>
-      </trans-unit>
-      <trans-unit>
-        <source>the recurring invoice was updated successfully.</source>
-        <target>la factura recurrent s'ha actualitzat correctament.</target>
-      </trans-unit>
-      <trans-unit>
-        <source>Customer email</source>
-        <target>Email del client</target>
-      </trans-unit>
-      <trans-unit>
-        <source>Fiscality Enabled</source>
-        <target>Fiscalitat activada</target>
-      </trans-unit>
-      <trans-unit>
-        <source>Fiscality</source>
-        <target>Fiscalitat</target>
-      </trans-unit>
-      <trans-unit>
-        <source>Incoming Taxes</source>
-        <target>Impostos Repercutits</target>
-      </trans-unit>
-      <trans-unit>
-        <source>Outgoing Taxes</source>
-        <target>Impostos Suportats</target>
-      </trans-unit>
-      <trans-unit>
-        <source>Tax Name</source>
-        <target>Impost</target>
-      </trans-unit>
-      <trans-unit>
-        <source>Base</source>
-        <target>Base</target>
-      </trans-unit>
-      <trans-unit>
-        <source>Tax Value</source>
-        <target>Import</target>
-      </trans-unit>
-      <trans-unit>
-        <source>Wrong Control Digit</source>
-        <target>Dígit de Control invàlid</target>
+        <target></target>
       </trans-unit>
     </body>
   </file>

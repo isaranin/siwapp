@@ -14,20 +14,7 @@ $invoice = $invoiceForm->getObject();
     echo $invoiceForm['id'];
     echo $invoiceForm['_csrf_token'];
     echo $invoiceForm['type'];
-    echo $invoiceForm['company_id'];
-    echo $invoiceForm['customer_id'];
     ?>
-
-<div id="saving-options">
-      <?php if ($invoice->getId()) {
-        echo gButton_to(__('Delete'), "recurring/delete?id=" . $invoice->getId(), array(
-            'class' => 'action delete', 
-            'post' => true,
-            'confirm' => __('Are you sure?'),
-          ) , 'button=false'); 
-      }?>
-       <?php echo gButton(__('Save'), 'type=submit class=action primary save', 'button=true') ?>
-    </div>
 
     <ul id="status">
       <li><?php echo __('Status')?>:&nbsp;<span class="status <?php echo ($stat = $invoice->getStatusString()) ?>"><?php echo __($stat)?></span></li>
@@ -67,13 +54,11 @@ $invoice = $invoiceForm->getObject();
       <ul class="inline">
         <?php echo $invoiceForm['series_id']->renderRow()?>
         <?php echo $invoiceForm['days_to_due']->renderRow()?>
-          <span style="margin-right:10px"><?php echo $invoiceForm['payment_type_id']->renderRow() ?> </span>
       </ul>
       <?php include_partial('common/items', array(
         'invoice' => $invoice,
         'invoiceForm' => $invoiceForm,
-        'currency' => $currency, 
-        'expense' => false
+        'currency' => $currency
         ));?>
     </div>
 

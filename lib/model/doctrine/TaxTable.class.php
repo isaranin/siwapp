@@ -11,33 +11,9 @@ class TaxTable extends Doctrine_Table
       ->whereIn('id',$tax_ids)
       ->execute();
     foreach($taxes as $tax)
-    {// one would expect $taxes being an empty array here, but itï¿½s not... 
+    {// one would expect $taxes being an empty array here, but it´s not... 
       $result += (in_array($tax->getId(), $tax_ids) ? $tax->getValue() : 0);
     }
     return $result;
   }
-  
-  public function getDefault()
-  {
-    $taxes = $this->createQuery()
-      ->where('is_default', 1)
-      ->execute();
-    
-    foreach($taxes as $tax)
-    {
-      // default value can be multiple
-      $defaultTax[] = $tax->getId();
-    }
-    
-    return $defaultTax;
-  }
-  
-  public function getCurrentCompany()
-    {
-        $query = $this->createQuery('q')
-                ->where('q.company_id = ?', sfContext::getInstance()->getUser()->getAttribute('company_id'))
-                ->orderBy('name ASC');
-        $result = $query->execute();
-        return $result;
-    }
 }

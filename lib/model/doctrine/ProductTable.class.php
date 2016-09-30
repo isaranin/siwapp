@@ -73,8 +73,8 @@ class ProductTable extends Doctrine_Table
     public function retrieveForSelect($q, $limit)
     {
       $items = $this->createQuery()
-        ->where('company_id = ?', sfContext::getInstance()->getUser()->getAttribute('company_id'))
-        ->andWhere('(reference LIKE ? or description LIKE ?)', array('%'.$q.'%', '%'.$q.'%'))
+        ->where('reference LIKE ?', '%'.$q.'%')
+        ->orWhere('description LIKE ?', '%'.$q.'%')
         ->limit($limit)
         ->execute();
 
@@ -86,7 +86,6 @@ class ProductTable extends Doctrine_Table
         $res[$i]['reference'] = $item->getReference();
         $res[$i]['description'] = $item->getDescription();
         $res[$i]['price'] = $item->getPrice();
-        $res[$i]['tax'] = $item->getTaxId();
         $i++;
       }
       

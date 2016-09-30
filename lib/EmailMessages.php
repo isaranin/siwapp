@@ -1,19 +1,10 @@
 <?php
 class SiwappMessage extends Swift_Message
 {
-
-  protected $company_name;
-
   public function __construct()
   {
     parent::__construct();
-    
-    if (sfContext::getInstance()->getUser()) {
-      $company = new Company();
-      $company = $company->loadById(sfContext::getInstance()->getUser()->getAttribute('company_id'));
-      $this->setFrom($company->getEmail(), $company->getName());
-      $this->company_name = $company->getName();
-    }
+    $this->setFrom(PropertyTable::get('company_email'), PropertyTable::get('company_name'));
   }
 }
 
@@ -42,21 +33,21 @@ class PasswordMessage extends SiwappMessage
     $body = array();
 
     $body[]  = $i18n->__("Dear %1%",array('%1%'=>$profile->first_name));
-    $body[]  = $i18n->__("You claim to have lost your password.");
+    $body[]  = $i18n->__("You claim to have lost your password");
     // if activation_link, then this is the activation message
     if($activation_link)
     {
       $body[] = $i18n->__("Please click the link below to activate the process and have a new password sent to you");
       $body[] = $activation_link;
-      $body[] = $i18n->__("If you can not click that link, please copy/paste it into a browser's location bar.");
+      $body[] = $i18n->__("If you can not click that link, please copy/paste it into a browser's location bar");
     }
     // if password, then this is the password recovery message
     else if($password)
     {
       $body[] = $i18n->__("This is your login info");
-      $body[] = $i18n->__("Username").": ".$profile->User->username;
-      $body[] = $i18n->__("Password").": ".$password;
-      $body[] = $i18n->__("Once you've logged in, you can change your password in the 'Settings / My settings' section");
+      $body[] = "Username: ".$profile->User->username;
+      $body[] = "Password: ".$password;
+      $body[] = $i18n->__("Once you've logged in, you can change your password in the \"Settings / My settings\" section");
     }
     else
     {
@@ -90,8 +81,13 @@ class InvoiceMessage extends SiwappMessage
     parent::__construct();
     $this->setTo($invoice->customer_email, $invoice->customer_name);
 
+    // To get all the properties loaded for the template
+    foreach($invoice->Items as $it)
+    {
+      $it->refreshRelated();
+    }
+    $data[] = $invoice;
     $model = get_class($invoice);
-    $data = Printer::getInvoiceData($model,$invoice->getId());
     $printer = new Printer($model, TemplateTable::getTemplateForModel($model)->getId());
 
     try
@@ -104,7 +100,7 @@ class InvoiceMessage extends SiwappMessage
                             'application/pdf'
                             );
       $this
-        ->setSubject($this->company_name.' ['.$model.': '.$invoice.']')
+        ->setSubject(PropertyTable::get('company_name').' ['.$model.': '.$invoice.']')
         ->setBody($printer->render($data), 'text/html')
         ->attach($attachment);
       $this->setReadyState(true);

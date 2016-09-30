@@ -5,36 +5,26 @@
  */
 class Item extends BaseItem
 {
-  private $decimals = null;
-  private function getDecimals()
-  {
-    if(!$this->decimals)
-    {
-      $this->decimals = PropertyTable::get('currency_decimals',2);
-    }
-    return $this->decimals;
-  }
-
   public function getBaseAmount()
   {
     return $this->getUnitaryCost() * $this->getQuantity();
   }
-
+  
   public function getNetAmount()
   {
     return $this->getBaseAmount() - $this->getDiscountAmount();
   }
-
+  
   public function getDiscountAmount()
   {
     return $this->getBaseAmount() * $this->getDiscount() / 100;
   }
-
+  
   public function getTaxAmount($tax_name = null)
   {
-    return round($this->getNetAmount() * $this->getTaxesPercent($tax_name) / 100,$this->getDecimals());
+    return $this->getNetAmount() * $this->getTaxesPercent($tax_name) / 100;
   }
-
+  
   public function getGrossAmount()
   {
     return $this->getNetAmount() + $this->getTaxAmount();
@@ -68,110 +58,34 @@ class Item extends BaseItem
     }
     return parent::__isset($name);
   }
-
+  
   public function getTaxesPercent($tax_names = null)
   {
-    $tax_names = $tax_names ?
-      ( is_array($tax_names) ?
-        array_map(array('CustomerTable', 'slugify'), $tax_names) :
-        array(CustomerTable::slugify($tax_names)) ) :
+    $tax_names = $tax_names ? 
+      ( is_array($tax_names) ? 
+        array_map(array('CustomerTable', 'slugify'), $tax_names) : 
+        array(CustomerTable::slugify($tax_names)) ) : 
       null;
     $total = 0;
     foreach($this->Taxes as $tax)
     {
-      if(!$tax_names ||
+      if(!$tax_names || 
          in_array(CustomerTable::slugify($tax->name), $tax_names))
       {
-        if(!$tax->getApplyTotal())
         $total += $tax->getValue();
       }
     }
-
+    
     return $total;
-  }
-
-  public function getTaxesDetail($tax_names = null)
-  {
-    $detail = array();
-    foreach($this->Taxes as $tax)
-    {
-      {
-        if($tax->getApplyTotal())
-            $detail[$tax->getName()] = round($this->getGrossAmount() * $tax->getValue($tax->getName()) / 100,$this->getDecimals());
-        else
-            $detail[$tax->getName()] = $this->getTaxAmount($tax->getName());
-      }
-    }
-
-    return $detail;
-  }
-
-  public function getBaseDetail($tax_names = null)
-  {
-    $detail = array();
-    foreach($this->Taxes as $tax)
-    {
-      {
-        if($tax->getApplyTotal())
-            $detail[$tax->getName()] = $this->getGrossAmount($tax->getName());
-        else
-            $detail[$tax->getName()] = $this->getNetAmount($tax->getName());
-      }
-    }
-
-    return $detail;
   }
 
   public function getQuantity()
   {
     return (float) $this->_get('quantity');
   }
-
+  
   public function getUnitaryCost()
   {
     return (float) $this->_get('unitary_cost');
-  }
-  
-  public function preSave($event)
-  {
-    // compute the stock
-    if ( $this->isNew() && ( $this->getQuantity() > 0) )
-    {
-      $product = Doctrine::getTable('Product')->find($this->getProductId());
-
-      if ($product) {
-        if ($this->getExpenseTypeId() < 1) {
-        $product->setStock($product->getStock() - $this->getQuantity());
-        } else if ($this->getExpenseTypeId() > 0){
-          $product->setStock($product->getStock() + $this->getQuantity());
-        }
-        $product->save();
-      }
-    }
-    
-   parent::preSave($event);
-  }
-  
-  public function preUpdate($event)
-  { 
-    // compute the stock
-    $oldQuantity = $this->getModified(true);
-    
-    if ($oldQuantity && array_key_exists("quantity", $oldQuantity)) {
-      $newQuantity = (int) $this->getQuantity() - (int) $oldQuantity["quantity"];
-
-      $product = Doctrine::getTable('Product')->find($this->getProductId());
-
-      if ($product) {
-        if ($this->getExpenseTypeId() < 1) {
-        $product->setStock($product->getStock() - $newQuantity);
-        } else if ($this->getExpenseTypeId() > 0){
-          $product->setStock($product->getStock() + $newQuantity);
-        }
-        $product->save();
-      }
-    }
-    
-    parent::preUpdate($event);
   }
 }

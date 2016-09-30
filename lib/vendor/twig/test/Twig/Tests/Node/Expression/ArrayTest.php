@@ -9,17 +9,19 @@
  * file that was distributed with this source code.
  */
 
-class Twig_Tests_Node_Expression_ArrayTest extends Twig_Test_NodeTestCase
+require_once dirname(__FILE__).'/../TestCase.php';
+
+class Twig_Tests_Node_Expression_ArrayTest extends Twig_Tests_Node_TestCase
 {
     /**
      * @covers Twig_Node_Expression_Array::__construct
      */
     public function testConstructor()
     {
-        $elements = array(new Twig_Node_Expression_Constant('foo', 1), $foo = new Twig_Node_Expression_Constant('bar', 1));
-        $node = new Twig_Node_Expression_Array($elements, 1);
+        $elements = array('foo' => $foo = new Twig_Node_Expression_Constant('bar', 0));
+        $node = new Twig_Node_Expression_Array($elements, 0);
 
-        $this->assertEquals($foo, $node->getNode(1));
+        $this->assertEquals($foo, $node->getNode('foo'));
     }
 
     /**
@@ -34,13 +36,10 @@ class Twig_Tests_Node_Expression_ArrayTest extends Twig_Test_NodeTestCase
     public function getTests()
     {
         $elements = array(
-            new Twig_Node_Expression_Constant('foo', 1),
-            new Twig_Node_Expression_Constant('bar', 1),
-
-            new Twig_Node_Expression_Constant('bar', 1),
-            new Twig_Node_Expression_Constant('foo', 1),
+            'foo' => new Twig_Node_Expression_Constant('bar', 0),
+            'bar' => new Twig_Node_Expression_Constant('foo', 0),
         );
-        $node = new Twig_Node_Expression_Array($elements, 1);
+        $node = new Twig_Node_Expression_Array($elements, 0);
 
         return array(
             array($node, 'array("foo" => "bar", "bar" => "foo")'),

@@ -38,7 +38,7 @@
  * @author    Charles Killian
  * @author    Hans Lellelid <hans@xmpl.org>
  * @package    phing.system.util
- * @version    $Revision: 1.5 $ $Date: 2006-09-14 22:19:08 +0200 (dj, 14 set 2006) $
+ * @version    $Revision: 1.5 $ $Date: 2006-09-14 22:19:08 +0200 (jue 14 de sep de 2006) $
  */
 class Timer {
 

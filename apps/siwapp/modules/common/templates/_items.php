@@ -1,36 +1,25 @@
 <?php use_helper('JavascriptBase'); ?>
-
 <table class="listing">
   <thead>
     <tr>
-      <?php if($expense) : ?>
-          <th><?php echo __('Description') ?></th>
-          <th class="right"><?php echo __('Expense Type') ?></th>
-          <th class="right"><?php echo __('Unit Cost') ?></th>
-          <th class="right"><?php echo __('Amount') ?></th>
-          <th class="right"><?php echo __('Taxes') ?></th>
-          <th class="right"><?php echo __('Price') ?></th>
-      <?php else: ?>
-          <?php if($sf_user->has_module('products')) :?>
-          <th><?php echo __('Reference') ?></th>
-          <?php endif?>
-          <th><?php echo __('Description') ?></th>
-          <th class="right"><?php echo __('Unit Cost') ?></th>
-          <th class="right"><?php echo __('Qty') ?></th>
-          <th class="right"><?php echo __('Taxes') ?></th>
-          <th class="right"><?php echo __('Discount') ?></th>
-          <th class="right"><?php echo __('Price') ?></th>
-      <?php endif; ?>
+      <?php if($sf_user->has_module('products')):?>
+      <th><?php echo __('Product') ?></th>
+      <?php endif?>
+      <th><?php echo __('Description') ?></th>
+      <th class="right"><?php echo __('Unit Cost') ?></th>
+      <th class="right"><?php echo __('Qty') ?></th>
+      <th class="right"><?php echo __('Taxes') ?></th>
+      <th class="right"><?php echo __('Discount') ?></th>
+      <th class="right"><?php echo __('Price') ?></th>
     </tr>
   </thead>
 
   <tbody id="tbody_invoice_items">
-    <?php $partial = $expense ? 'common/expenseRow' : 'common/invoiceRow' ?>
     <?php $invoiceItemsGlobalErrors = array(); ?>
     <?php foreach($invoiceForm['Items'] as $rowId => $invoiceItemForm):?>
     <?php if($invoiceItemForm['remove']->getValue() != '1'):?>
     <?php if (strlen($tmp = $invoiceItemForm->renderError())) $invoiceItemsGlobalErrors[] = $tmp; ?>
-    <?php include_partial($partial, array(
+    <?php include_partial('common/invoiceRow', array(
       'invoiceItemForm' => $invoiceItemForm,
       'rowId'           => $rowId
     ))?>
@@ -40,16 +29,11 @@
 
   <tfoot id="global_calculations">
     <tr>
-      <?php $colspan = '4';
-            if ($expense) $colspan = '4';
-            else if ($sf_user->has_module('products')) $colspan='5' ?>
-      <td colspan="<?php echo $colspan ?>" rowspan="25" class="noborder top">
+      <td colspan="<?php echo ($sf_user->has_module('products'))?'5':'4'?>" rowspan="5" class="noborder top">
         <div id="addItem">
-          <?php  ?>
-          <?php
-            $addItemURL = $expense ? 'common/ajaxAddExpenseItem' : 'common/ajaxAddInvoiceItem';
+          <?php 
             $addItemOptions = array(
-              'url'      => $addItemURL,
+              'url'      => 'common/ajaxAddInvoiceItem',
               'position' => 'bottom',
               'method'   => 'post',
               'with'     => "{invoice_id: $('#invoice_id').val()}",
@@ -72,43 +56,29 @@
           </div>
         <?php endif ?>
       </td>
-      <td><?php echo __('Subtotal') ?></td>
+      <td><?php echo __('Base') ?></td>
       <td class="base right">
         <?php echo format_currency($invoice->getRoundedAmount('base'), $currency) ?>
       </td>
     </tr>
-    <?php if(!$expense) :?>
     <tr>
       <td><?php echo __('Discount') ?></td>
       <td class="discount right">
         <?php echo format_currency($invoice->getRoundedAmount('discount'), $currency)?>
       </td>
     </tr>
-    <?php endif; ?>
-    <?php 
-    if (is_array($invoice->getBasesDetails()->getRawValue())):
-      foreach ($invoice->getBasesDetails() as $name => $amount): ?>
-      <tr>
-        <td><?php echo __('Base')." ".$name ?></td>
-        <td class="net right">
-          <?php echo format_currency($amount, $currency)?>
-        </td>
-      </tr>
-      <?php endforeach ?>
-      <?php foreach ($invoice->getTaxDetails() as $name => $amount): ?>
-        <tr>
-          <td><?php echo __('Total')." ".$name ?></td>
-          <td class="taxes right"><?php echo format_currency($amount,$currency)?></td>
-        <tr>
-      <?php endforeach; 
-    else: ?>
-      <tr>
-       <td><?php echo __('Taxes') ?></td>
-       <td class="taxes right">
-         <?php echo format_currency($invoice->getTaxAmount(), $currency) ?>
-       </td>
-      </tr>
-   <?php endif; ?>
+    <tr>
+      <td><?php echo __('Subtotal') ?></td>
+      <td class="net right">
+        <?php echo format_currency($invoice->getRoundedAmount('net'), $currency)?>
+      </td>
+    </tr>
+    <tr>
+      <td><?php echo __('Taxes') ?></td>
+      <td class="taxes right">
+        <?php echo format_currency($invoice->getRoundedAmount('tax'), $currency)?>
+      </td>
+    </tr>
     <tr class="strong">
       <td><?php echo __('Total') ?></td>
       <td class="gross right">

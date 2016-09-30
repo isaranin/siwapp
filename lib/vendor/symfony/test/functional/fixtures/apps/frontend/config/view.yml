@@ -14,9 +14,6 @@ default:
     -
       ie6:
         condition: lte IE 6
-    -
-      multiple_media:
-        media: 'print,handheld'
 
   javascripts:    [ ]
 

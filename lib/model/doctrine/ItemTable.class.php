@@ -10,7 +10,6 @@ class ItemTable extends Doctrine_Table
     
     $items = $this->createQuery()
       ->select('Description')
-      ->where('company_id = ?', sfContext::getInstance()->getUser()->getAttribute('company_id'))
       ->where('Description LIKE ?', '%'.$q.'%')
       ->distinct()
       ->limit($limit)

@@ -61,9 +61,8 @@ $currency = $sf_user->getAttribute('currency');
         if(isset($isNew) && !count($item_taxes))
         {
           $default_taxes = Doctrine::getTable('Tax')->createQuery()->
-            AndWhere('active = ? ', true)->
-            AndWhere('is_default = ? ', true)->
-            AndWhere('company_id = ?', sfContext::getInstance()->getUser()->getAttribute('company_id'))->execute();
+            where('active', true)->
+            where('is_default', true)->execute();
           foreach($default_taxes as $taxx)
           {
             echo javascript_tag(
@@ -88,7 +87,7 @@ $currency = $sf_user->getAttribute('currency');
     
   </td>
   <td class="right discount"><?php echo $invoiceItemForm['discount']->render(array(), ESC_RAW) ?> %</td>
-    <td class="right price"><?php echo format_currency(Tools::getRounded(Tools::getNetAmount($invoiceItemForm['unitary_cost']->getValue(),$invoiceItemForm['quantity']->getValue(),$invoiceItemForm['discount']->getValue(),$totalTaxesValue), Tools::getDecimals()), $currency) ?> </td>
+    <td class="right price"><?php echo format_currency(Tools::getGrossAmount($invoiceItemForm['unitary_cost']->getValue(),$invoiceItemForm['quantity']->getValue(),$invoiceItemForm['discount']->getValue(),$totalTaxesValue), $currency) ?> </td>
 </tr>
 <?php
 $urlAjax = url_for('common/ajaxInvoiceItemsAutocomplete');
@@ -98,29 +97,16 @@ echo javascript_tag("
     .autocomplete('".$urlAjax."', jQuery.extend({}, {
       dataType: 'json',
       parse:    function(data) {
-              console.log(data);
         var parsed = [];
         for (key in data) {
-          parsed[parsed.length] = { data: [
-            data[key].description, 
-            data[key].reference, 
-            data[key].price,
-            data[key].id
-          ], value: data[key].description, result: data[key].description };
+          parsed[parsed.length] = { data: [ data[key], key ], value: data[key], result: data[key] };
         }
         return parsed;
       },
       minChars: 2,
       matchContains: true
-    }))
-    .result(function(event, item) {
-      $('#".$invoiceItemForm['description']->renderId()."').val(item[0]);
-      $('#".$invoiceItemForm['product_autocomplete']->renderId()."').val(item[1]);
-      $('#".$invoiceItemForm['unitary_cost']->renderId()."').val(item[2]);
-      $('#".$invoiceItemForm['product_id']->renderId()."').val(item[3]);
-        
-      $(document).trigger('GlobalUpdateEvent');
-    });
+    })
+    );
     
   //connect the selection of a product to update the row item
   $('#".$invoiceItemForm['product_autocomplete']->renderId()."')
@@ -130,12 +116,11 @@ echo javascript_tag("
         var parsed = [];
         for (key in data) {
           parsed[parsed.length] = { data: [
-            data[key].description,
-            data[key].reference,  
+            data[key].reference, 
+            data[key].description, 
             data[key].price,
-            data[key].id,
-            data[key].tax
-          ], value: data[key].description, result: data[key].description };
+            data[key].id
+          ], value: data[key].reference, result: data[key].reference };
         }
         return parsed;
       },
@@ -143,15 +128,9 @@ echo javascript_tag("
       matchContains: true
     }))
     .result(function(event, item) {
-      $('#".$invoiceItemForm['description']->renderId()."').val(item[0]);
-      $('#".$invoiceItemForm['product_autocomplete']->renderId()."').val(item[1]);
+      $('#".$invoiceItemForm['description']->renderId()."').val(item[1]);
       $('#".$invoiceItemForm['unitary_cost']->renderId()."').val(item[2]);
       $('#".$invoiceItemForm['product_id']->renderId()."').val(item[3]);
-        
-      var taxSelectName = 'invoice[Items][".$rowId."][taxes_list][]';
-      var taxSelect = 'select[name='+ '\"' + taxSelectName + '\"' + ']';
-      $(taxSelect).val(item[4]);
-
       $(document).trigger('GlobalUpdateEvent');
     });
 ");

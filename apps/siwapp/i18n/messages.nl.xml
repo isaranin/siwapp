@@ -51,7 +51,7 @@
         <target>Aantal</target>
       </trans-unit>
       <trans-unit>
-        <source>Name/Legal Name</source>
+        <source>Customer Name</source>
         <target>Klantnaam</target>
       </trans-unit>
       <trans-unit>
@@ -432,19 +432,19 @@
       </trans-unit>
       <trans-unit>
         <source>Client info</source>
-        <target>Klant informatie</target>
+        <target>Cli\'ebnt informatie</target>
       </trans-unit>
       <trans-unit>
         <source>Client Name</source>
-        <target>Klantnaam</target>
+        <target>Cli\'ebntnaam</target>
       </trans-unit>
       <trans-unit>
         <source>Client Legal Id</source>
-        <target>Klant ID nummer</target>
+        <target>Cli\'ebnt ID nummer</target>
       </trans-unit>
       <trans-unit>
         <source>Client Address</source>
-        <target>Klant adres</target>
+        <target>Cli\'ebnt adres</target>
       </trans-unit>
       <trans-unit>
         <source>Contact Person</source>
@@ -460,7 +460,7 @@
       </trans-unit>
       <trans-unit>
         <source>Client Email</source>
-        <target>Klant Email</target>
+        <target>Cli\'ebnt Email</target>
       </trans-unit>
       <trans-unit>
         <source>The customer has not been saved due to some errors.</source>

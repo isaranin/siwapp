@@ -8,12 +8,6 @@ Twig
     templates
     api
     advanced
-    internals
+    extensions
+    hacking
     recipes
-    coding_standards
-    tags/index
-    filters/index
-    functions/index
-    tests/index
-    installation
-    deprecated

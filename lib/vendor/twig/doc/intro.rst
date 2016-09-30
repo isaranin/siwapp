@@ -29,51 +29,71 @@ Twig needs at least **PHP 5.2.4** to run.
 Installation
 ------------
 
-The recommended way to install Twig is via Composer:
+You have multiple ways to install Twig. If you are unsure what to do, go with
+the tarball.
 
-.. code-block:: bash
+From the tarball release
+~~~~~~~~~~~~~~~~~~~~~~~~
 
-    composer require twig/twig:1.*
+1. Download the most recent tarball from the `download page`_
+2. Unpack the tarball
+3. Move the files somewhere in your project
 
-.. note::
+Installing the development version
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    To learn more about the other installation methods, read the
-    :doc:`installation<installation>` chapter; it also explains how to install
-    the Twig C extension.
+1. Install Subversion or Git
+2. For Subversion: ``svn co http://svn.twig-project.org/trunk/ twig``, for Git:
+   ``git clone git://github.com/fabpot/Twig.git``
+
+Installing the PEAR package
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+1. Install PEAR
+2. ``pear channel-discover pear.twig-project.org``
+3. ``pear install twig/Twig`` (or ``pear install twig/Twig-beta``)
 
 Basic API Usage
 ---------------
 
 This section gives you a brief introduction to the PHP API for Twig.
 
-.. code-block:: php
+The first step to use Twig is to register its autoloader::
 
-    require_once '/path/to/vendor/autoload.php';
+    require_once '/path/to/lib/Twig/Autoloader.php';
+    Twig_Autoloader::register();
+
+Replace the ``/path/to/lib/`` path with the path you used for Twig
+installation.
+
+.. note::
+
+    Twig follows the PEAR convention names for its classes, which means you
+    can easily integrate Twig classes loading in your own autoloader.
+
+.. code-block:: php
 
     $loader = new Twig_Loader_String();
     $twig = new Twig_Environment($loader);
 
-    echo $twig->render('Hello {{ name }}!', array('name' => 'Fabien'));
+    $template = $twig->loadTemplate('Hello {{ name }}!');
+
+    $template->display(array('name' => 'Fabien'));
 
 Twig uses a loader (``Twig_Loader_String``) to locate templates, and an
 environment (``Twig_Environment``) to store the configuration.
 
-The ``render()`` method loads the template passed as a first argument and
-renders it with the variables passed as a second argument.
+The ``loadTemplate()`` method uses the loader to locate and load the template
+and returns a template object (``Twig_Template``) which is suitable for
+rendering with the ``display()`` method.
 
-As templates are generally stored on the filesystem, Twig also comes with a
-filesystem loader::
+Twig also comes with a filesystem loader::
 
     $loader = new Twig_Loader_Filesystem('/path/to/templates');
     $twig = new Twig_Environment($loader, array(
-        'cache' => '/path/to/compilation_cache',
+      'cache' => '/path/to/compilation_cache',
     ));
 
-    echo $twig->render('index.html', array('name' => 'Fabien'));
+    $template = $twig->loadTemplate('index.html');
 
-.. tip::
-
-    If you are not using Composer, use the Twig built-in autoloader::
-
-        require_once '/path/to/lib/Twig/Autoloader.php';
-        Twig_Autoloader::register();
+.. _`download page`: http://www.twig-project.org/installation

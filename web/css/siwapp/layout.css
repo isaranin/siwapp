@@ -37,7 +37,7 @@ a.xit:hover { background-position:-10px center; }
   position:relative;
   display:block;
   float:left;
-  margin:0 0 0 0em;
+  margin:0 0 0 2em;
   text-decoration:none;
   color:inherit;
 }
@@ -45,7 +45,7 @@ a.xit:hover { background-position:-10px center; }
   position:absolute;
   display:inline-block;
   width:100px;
-  top:82px;
+  top:75px;
   left:200px;
 }
 #hd-top-menu { float:right; padding:1em 2em 1em 1em; }
@@ -65,7 +65,7 @@ a.xit:hover { background-position:-10px center; }
   position:relative;
   top:2px;
   padding-top:0.4em;
-  padding-bottom:4px; 
+  padding-bottom:1em; 
   border:1px solid #DCDCDC;
   border-bottom:none;
   background-color:white;
@@ -177,15 +177,6 @@ table.listing .noborder th { border:0 !important; background-image:none !importa
 table.listing .btn.action-clear { font-size:0.846em; }
 table.listing tbody td.action { width:1em; }
 
-table.listing td.remesed { 
-  background:transparent url(../../images/icons/coins.png) no-repeat 97% 50%;
-  padding-right: 3%;
-}
-table.listing td.sentremesed { 
-  background:transparent url(../../images/icons/sent_remesed.png) no-repeat 97% 50%;
-  padding-right: 3%;
-}
-
 table.listing td.sent { 
   background:transparent url(../../images/icons/email_open.png) no-repeat 97% 50%;
   padding-right: 3%;
@@ -198,7 +189,10 @@ table.listing td.sent {
 /* DASHBOARD */
 .dashboard table.dashboard-info    { width:auto; margin:1em 0; border-collapse:collapse; }
 .dashboard table.dashboard-info td { padding:0.2em 1em; border:1px solid #DCDCDC; }
-.dashboard div#situation-wrapper div { display: inline-block; }
+.dashboard #dashboard-summary  { float:left; }
+.dashboard #dashboard-balance { float:right; margin-left:1em; }
+.dashboard #dashboard-taxes { float:right; }
+
 
 /* RECURRING INVOICES */
 .recurring table#recurring-summary    { width:auto; margin:1em 0; border-collapse:collapse; }
@@ -214,45 +208,33 @@ ul.payments li ul li { float:left; margin:0em 1em 0.5em 0em;}
 form.payments-form input { padding:0; margin:0; outline-width:0; border:0; border-bottom:1px solid #DCDCDC; }
 form.payments-form input:focus { border-style:dotted; border-color:#DA4722; background-color:#FFF0E1; }
 form.payments-form input.amount { text-align: right; width: 9em;}
-form.payments-form input.notes { width: 28em;}
+form.payments-form input.notes { width: 38em;}
 form.payments-form a.xit { margin:0.5em 0.5em 0 0; }
 form.payments-form .buttons { margin:0; padding:0; }
 
 /* INVOICE EDITING */
-#invoice-container, #customer-container, #supplier-container, #product-container        
-{ display:block; }
-#invoice-container .block, #customer-container .block,#supplier-container .block, #product-container .block
-{ display:block; overflow:visible; padding:0 0 1.5em; margin:0 3.846em 0 1em; }
+#invoice-container, #customer-container, #product-container        { display:block; }
+#invoice-container .block, #customer-container .block, #product-container .block { display:block; overflow:visible; padding:0 0 1.5em; margin:0 3.846em 0 1em; }
 
-#invoice-container ul.inline, #customer-container ul.inline,#supplier-container ul.inline, #product-container ul.inline
-{ margin:0; }
-#invoice-container ul.inline li, #customer-container ul.inline li, 
-#supplier-container ul.inline li, #product-container ul.inline li         { position:relative; }
+#invoice-container ul.inline, #customer-container ul.inline, #product-container ul.inline            { margin:0; }
+#invoice-container ul.inline li, #customer-container ul.inline li, #product-container ul.inline li         { position:relative; }
 #invoice-container ul.inline .error_list, #customer-container ul.inline .error_list, #product-container ul.inline .error_list  { position:absolute; left:0; bottom:-1.2em; display:inline; }
 
 #invoice-container input,
 #invoice-container textarea, 
 #customer-container input, 
 #customer-container textarea,
-#supplier-container input, 
-#supplier-container textarea,
 #product-container input,
-#product-container textarea   
-{ border:0px solid #DCDCDC; border-bottom-width:1px; }
+#product-container textarea   { border:0px solid #DCDCDC; border-bottom-width:1px; }
 #invoice-container input,
 #customer-container input,
-#supplier-container input,
-#product-container input 
-{ padding:0; margin:0; outline-width:0; }
+#product-container input { padding:0; margin:0; outline-width:0; }
 #invoice-container textarea:focus,
 #invoice-container input:focus,
 #customer-container textarea:focus,
 #customer-container input:focus,
-#supplier-container textarea:focus,
-#supplier-container input:focus,
 #product-container textarea:focus,
-#product-container input:focus 
-{ border-style:dotted; outline-width:0; }
+#product-container input:focus { border-style:dotted; outline-width:0; }
 
 #invoice-container li ._25,
 #invoice-container li ._50,
@@ -260,28 +242,22 @@ form.payments-form .buttons { margin:0; padding:0; }
 #customer-container li ._25,
 #customer-container li ._50,
 #customer-container li ._75,
-#supplier-container li ._25,
-#supplier-container li ._50,
-#supplier-container li ._75,
 #product-container li ._25,
 #product-container li ._50,
 #product-container li ._75 { display:block; float:left; margin-right:1.5%; line-height:1em; vertical-align:middle;}
-#invoice-container li ._25, #customer-container li ._25,  #supplier-container li ._25, #product-container li ._25  { width:23.5%; }
-#invoice-container li ._50, #customer-container li ._50, #supplier-container li ._50, #product-container li ._50  { width:48.5%; }
-#invoice-container li ._75, #customer-container li ._75, #supplier-container li ._75, #product-container li ._75 { width:73.5%; }
-#invoice-container li ._last, #customer-container li ._last, #supplier-container li ._last, #product-container li ._last { margin-right:0; clear:right; }
+#invoice-container li ._25, #customer-container li ._25, #product-container li ._25  { width:23.5%; }
+#invoice-container li ._50, #customer-container li ._50, #product-container li ._50  { width:48.5%; }
+#invoice-container li ._75, #customer-container li ._75, #product-container li ._75 { width:73.5%; }
+#invoice-container li ._last, #customer-container li ._last, #product-container li ._last { margin-right:0; clear:right; }
 #invoice-container li label._25,
 #invoice-container li label._50,
 #customer-container li label._25,
 #customer-container li label._50,
-#supplier-container li label._25,
-#supplier-container li label._50,
 #product-container li label._25,
 #product-container li label._50 { line-height:1.5em; }
 
 /* "show" mode */
 #invoice-container .show #customer-data label { display:block; margin-bottom:5px; font-size:0.8em;}
-#invoice-container .show #supplier-data label { display:block; margin-bottom:5px; font-size:0.8em;}
 #invoice-container .show li ._25,
 #invoice-container .show li ._50,
 #invoice-container .show li ._75 {
@@ -307,69 +283,36 @@ form.payments-form .buttons { margin:0; padding:0; }
 #invoice-container .ui-datepicker-trigger { margin-left:0.5em; }
 #invoice-container #addItem { margin-bottom:1em; }
 
-#invoice-container div.global-data, #customer-container div.global-data,
-#supplier-container div.global-data,#product-container div.global-data     
-{ overflow:hidden; }
-#invoice-container div.global-data ul, #customer-container div.global-data ul,
-#supplier-container div.global-data ul, #product-container div.global-data ul 
-{ margin:0 250px 0 0; list-style-type:none; }
+#invoice-container div.global-data, #customer-container div.global-data, #product-container div.global-data     { overflow:hidden; }
+#invoice-container div.global-data ul, #customer-container div.global-data ul, #product-container div.global-data ul { margin:0 250px 0 0; list-style-type:none; }
 #invoice-container div.global-data textarea,
 #invoice-container div.global-data input,
 #customer-container div.global-data textarea,
 #customer-container div.global-data input,
-#supplier-container div.global-data textarea,
-#supplier-container div.global-data input,
 #product-container div.global-data textarea,
 #product-container div.global-data input
 { width:100%; }
 #invoice-container div.global-data input.short, #customer-container div.global-data input.short,
-#supplier-container div.global-data input.short, #product-container div.global-data input.short
+#product-container div.global-data input.short
 { width:3em;}
 #invoice-container div.global-data span.clear, #customer-container  div.global-data span.clear,
-#supplier-container  div.global-data span.clear,#product-container  div.global-data span.clear
+#product-container  div.global-data span.clear
 { display:block; height:0.5em; }
 
 #customer-data  input[type="text"],
-#customer-administrative-data  input[type="text"],
 #customer-data textarea,
-#customer-administrative-data textarea,
-#customer-administrative-data select,
-#supplier-data  input[type="text"],
-#supplier-administrative-data  input[type="text"],
-#supplier-data textarea,
-#supplier-administrative-data textarea,
-#supplier-administrative-data select,
 #product-data  input[type="text"],
-#product-data textarea,
-#company-data  input[type="text"],
-#company-data textarea,
-#company-administrative-data  input[type="text"],
-#company-administrative-data textarea
-{ padding:8px 0 0 0; font-size: 14px; }
+#product-data textarea
+{ padding:0; }
 
-#customer-data label.light,
-#customer-administrative-data label.light,
-#supplier-administrative-data label.light,
-#company-data label.light,
-#company-administrative-data label.light
-{ 
-  color: lightslategrey; 
-  opacity: 0.9;
-  font-size: 14px; 
-  font-weight: normal;
-  margin-top: 1em;
-}
+#customer-data ul li, #product-data ul li { margin-bottom:1em; height:1em;}
 
-#supplier-data ul li,#customer-data ul li, #product-data ul li, #company-data ul li 
-{ margin-bottom:1em; height:1em;}
-
-#supplier-data ul.error_list li,#customer-data ul.error_list li, #product-data ul.error_list li, #company-data ul.error_list li
-{ float:right; clear:both; text-align:right; }
-#supplier-data ul.error_list,#customer-data ul.error_list, #product-data ul.error_list, #company-data ul.error_list{ margin:0; }
+#customer-data ul.error_list li, #product-data ul.error_list li  { float:right; clear:both; text-align:right; }
+#customer-data ul.error_list, #product-data ul.error_list{ margin:0; }
 
 #invoice-container #terms-data textarea { display:block; width:100%; margin:0 0 1em; }
 
-#saving-options { text-align:right; }
+#invoice-container #saving-options { text-align:right; }
 
 #invoice-container .taglist { margin:1em 0; }
 
@@ -404,8 +347,8 @@ form.payments-form .buttons { margin:0; padding:0; }
 #invoice-container table.listing tbody .taxes span input + input { margin-left:0.5em; }
 
 #invoice-container label.tip,
-#customer-data label.tip, #customer-administrative-data label.tip, #supplier-data label.tip, #supplier-administrative-data label.tip,
-#product-data label.tip, #company-data label.tip, #company-administrative-data label.tip {
+#customer-data label.tip,
+#product-data label.tip {
   position:absolute;
   font-size:10px;
   line-height:10px;
@@ -477,12 +420,6 @@ div#invoice-container div#recurring-data input { width: auto;}
 #settings-wrapper table, 
 #settings-wrapper table td,
 #settings-wrapper table th { border:none; padding:0.5em;}
-
-#settings-wrapper #company-data label.tip, #company-administrative-data label.tip {
-  font-size:10px;
-  font-weight:normal;
-}
-
 #settings-wrapper label {
   display:block;
   font-weight:bold;
@@ -490,26 +427,6 @@ div#invoice-container div#recurring-data input { width: auto;}
   line-height:1em;
   margin-bottom:0.3em;
 }
-
-#invoice-container label,
-#customer-data label, #customer-administrative-data label, #supplier-data label, #supplier-administrative-data label,
-#product-data label, #company-data label, #company-administrative-data label {
-  display:block;
-  font-weight:bold;
-  font-size:0.85em;
-  line-height:1em;
-  margin-top:1.2em;
-  margin-bottom:0.5em;
-}
-
-/*
-#settings-wrapper #company-data label {
-  display:block;
-  font-weight:normal;
-  font-size:0.85em;
-  margin-bottom:0.5em;
-}*/
-
 
 #settings-wrapper fieldset      { float:left; width:47%; margin:1em 0; }
 #settings-wrapper fieldset > ul { margin:0; list-style-type:none; }
@@ -520,7 +437,6 @@ div#invoice-container div#recurring-data input { width: auto;}
 #settings-wrapper textarea   { resize:none; } /* SAFARI HACK */
 #settings-wrapper textarea,
 #settings-wrapper input.full { width:100%; }
-
 #settings-wrapper input,
 #settings-wrapper textarea   { border:0 solid #DCDCDC; border-bottom-width:1px; line-height:1.2em; }
 #settings-wrapper textarea,
@@ -552,28 +468,6 @@ div#invoice-container div#recurring-data input { width: auto;}
 #settings-wrapper fieldset.taxseries ul.head a.xit { visibility:hidden; }
 #settings-wrapper fieldset.taxseries li { display:block;float:left;margin:0.5em 1em;}
 
-#settings-wrapper li ._25,
-#settings-wrapper li ._50,
-#settings-wrapper li ._75 { display:block; float:left; margin-right:1.5%; line-height:1em; vertical-align:middle; }
-
-#settings-wrapper li ._25  { width:24.2%; }
-#settings-wrapper li ._50  { width:50%; }
-#settings-wrapper li ._75  { width:73.5%; }
-
-#settings-wrapper #company-data input, #company-administrative-data input
-{ width:100%; }
-
-#settings-wrapper #company-data li, #company-administrative-data li {clear: both !important;}
-
-/*#settings-wrapper #company-data ul.inline li          { position:relative; } */
-#settings-wrapper #company-data ul .error_list li, #company-administrative-data ul .error_list li {  margin-bottom: 5px; }
-
-#settings-wrapper #company-data input[type="text"],
-#settings-wrapper #company-data textarea,
-#settings-wrapper #company-administrative-data input[type="text"],
-#settings-wrapper #company-administrative-data textarea
-{ margin:8px 0 0; font-size: 14px; }
-
 #settings-wrapper #taxes li.is_default,
 #settings-wrapper #taxes li.active { width:45px; }
 #settings-wrapper #taxes input.is_default,
@@ -583,10 +477,6 @@ div#invoice-container div#recurring-data input { width: auto;}
 #settings-wrapper #seriess .name { width:14em; }
 #settings-wrapper #seriess .first_number { width:7em; }
 #settings-wrapper #seriess .value { width:8em; }
-#settings-wrapper #expenses .name { width:14em; }
-#settings-wrapper #payments .name { width:14em; }
-#settings-wrapper #taxConditions .name { width:14em; }
-#settings-wrapper #description .name { width:12em; }
 
 
 
@@ -635,40 +525,3 @@ div.grippie {
   height: 20%;
 }
 form div.resizable-textarea { padding-bottom: 0pt;}
-
-/* Checkbox of users selection */
-
-ul.checkbox_list label {
-    display:inline;
-}
-
-/* stock alerts styles */
-#noti_Container {
-    position:relative;     /* This is crucial for the absolutely positioned element */
-    width:16px;
-    height:16px;
-}
-
-.noti_bubble {
-    position:absolute;    /* This breaks the div from the normal HTML document. */
-    top: -4px;
-    right:6px;
-    padding:1px 2px 1px 2px;
-    background-color:red; /* you could use a background image if you'd like as well */
-    color:white;
-    font-weight:bold;
-    font-size:0.75em;
-
-    /* The following is CSS3, but isn't crucial for this technique to work. */
-    /* Keep in mind that if a browser doesn't support CSS3, it's fine! They just won't have rounded borders and won't have a box shadow effect. */
-    /* You can always use a background image to produce the same effect if you want to, and you can use both together so browsers without CSS3 still have the rounded/shadow look. */
-    border-radius:30px;
-    box-shadow:1px 1px 1px gray;
-    
-    line-height: 1em;
-}
-
-.noti_bubble:hover {
-  top: -8px;
-  cursor:default;
-}

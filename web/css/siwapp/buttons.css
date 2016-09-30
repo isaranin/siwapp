@@ -106,7 +106,6 @@ button.pill-r span { border-left-color:#fff; }
 .btn.pdf span span          { background-image:url(../../images/icons/pdf.png);  }
 
 .btn.send span span         { background-image:url(../../images/icons/send.png); }
-.btn.export span span         { background-image:url(../../images/icons/export.png); }
 .btn.action.send span span  { padding-left:27px; background-position:5px center; }
 
 .btn.create-invoice span span { background-image:url(../../images/icons/page_white_gear.png); }
@@ -118,7 +117,6 @@ button.pill-r span { border-left-color:#fff; }
 
 .btn.payment span span      { background-image:url(../../images/icons/coins.png); }
 .btn.add-payment span span  { background-image:url(../../images/icons/add_payment.png); }
-.btn.remesar span span      { background-image:url(../../images/icons/coins.png); }
 
 .btn.invoices span span      { background-image:url(../../images/icons/invoices.png); }
 

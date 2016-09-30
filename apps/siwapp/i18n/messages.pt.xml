@@ -51,7 +51,7 @@
         <target>Número</target>
       </trans-unit>
       <trans-unit>
-        <source>Name/Legal Name</source>
+        <source>Customer Name</source>
         <target>Nome do cliente</target>
       </trans-unit>
       <trans-unit>

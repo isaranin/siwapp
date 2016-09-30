@@ -17,10 +17,6 @@ class TemplateForm extends BaseTemplateForm
   public function configure()
   {
     unset($this['created_at'], $this['updated_at'], $this['slug']);
-    $this->widgetSchema['company_id'] = new sfWidgetFormInputHidden();
-    $this->setDefaults(array(
-        'company_id' => sfContext::getInstance()->getUser()->getAttribute('company_id'),
-        ));
     
     $this->widgetSchema['template'] = new sfWidgetFormEditArea(array('editarea_options' => array(
       'min_width'  => '900',
@@ -32,7 +28,7 @@ class TemplateForm extends BaseTemplateForm
       'replace_tab_by_spaces' => true,
       'toolbar'    => 'save, |, fullscreen, search, go_to_line, |, undo, redo, |, change_smooth_selection, highlight, reset_highlight, word_wrap',
       'save_callback' => "editarea_save_callback"
-      )), array("rows"=>"40"));
+      )));
     
     $this->validatorSchema['name']->setOption('required', true);
     $this->validatorSchema['template']->setOption('required', true);

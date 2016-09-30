@@ -3,14 +3,12 @@ all:
     title:     siwapp - Customers
   components:
     searchForm: [search, customerForm]
-
+    
 indexSuccess:
   stylesheets: [ /sfFormExtraPlugin/css/jquery.autocompleter.css ]
   javascripts:
     - core/table.js
-
+    
 editSuccess:
   javascripts:
     - invoice
-    - tags
-    - js-digito-control-calculator/calcularDC.js

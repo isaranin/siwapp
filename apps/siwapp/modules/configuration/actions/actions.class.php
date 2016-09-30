@@ -36,11 +36,12 @@ class configurationActions extends sfActions
     if ($request->isMethod('post'))
     {
       $form->bind($request->getParameter($form->getName()), $request->getFiles($form->getName()));
+      
       if ($form->isValid())
       {
         $form->save();
+        
         $user->info($i18n->__('Your settings were successfully saved.'));
-        $user->loadCompany(sfContext::getInstance()->getUser()->getAttribute('company_id'));
         $user->loadUserSettings();
         
         $this->redirect('@settings');
@@ -57,63 +58,32 @@ class configurationActions extends sfActions
    * undocumented function
    *
    * @return void
-   * @author Sergi Almacellas  <sergi.almacellas@btactic.com>
+   * @author JoeZ99 <jzarate@gmail.com>
    **/
-  public function executeProductsSettings(sfWebRequest $request)
+  public function executeSiwappModules(sfWebRequest $request)
   {
     $user = $this->getUser();
     $i18n = $this->getContext()->getI18N();
-    
-    $form = new ProductsSettingsForm(array(),null, array('culture' => $user->getCulture()));
-    if ($request->isMethod('post'))
+    $form = new SiwappModulesForm();
+    if($request->isMethod('post'))
     {
-  
       $form->bind($request->getParameter($form->getName()));
-
-      if ($form->isValid())
+      if($form->isValid())
       {
-        $form->save();
-        
+        $config = $request->getParameter($form->getName());
+        if(!(isset($config['siwapp_modules']) and 
+             $smodules = $config['siwapp_modules']))
+        {
+          $smodules = array();
+        }
+        PropertyTable::set('siwapp_modules',$smodules);
         $user->info($i18n->__('Your settings were successfully saved.'));
-        
-        $this->redirect('@products_settings');
+        $user->loadUserSettings();
+        $this->redirect('@siwapp_modules');
       }
       else
       {
-        $user->error($i18n->__('Settings could not be saved. Please, check entered values and try to correct them.'), false);
-      }
-    }
-    $this->form = $form;
-  }
-  
-  /**
-   * Expenses settings
-   * 
-   * @param sfWebRequest $request
-   * @author Pablo L. Fiumidinisi <plfiumi@gmail.com>
-   */
-  public function executeExpensesSettings(sfWebRequest $request)
-  {
-    $user = $this->getUser();
-    $i18n = $this->getContext()->getI18N();
-    
-    $form = new ExpensesSettingsForm(array(),null, array('culture' => $user->getCulture()));
-    if ($request->isMethod('post'))
-    {
-  
-      $form->bind($request->getParameter($form->getName()));
-
-      if ($form->isValid())
-      {
-        $form->save();
-        
-        $user->info($i18n->__('Your settings were successfully saved.'));
-        
-        $this->redirect('@expenses_settings');
-      }
-      else
-      {
-        $user->error($i18n->__('Settings could not be saved. Please, check entered values and try to correct them.'), false);
+        $user->error($i18n->__('Settings could not be saved'),false);
       }
     }
     $this->form = $form;
@@ -124,7 +94,7 @@ class configurationActions extends sfActions
     $user = $this->getUser();
     $i18n = $this->getContext()->getI18N();
     
-    $form = new CurrentUserProfileForm($user->getProfile(), array('user'=>$user));
+    $form = new ProfileForm($user->getProfile(), array('user'=>$user));
     
     if ($request->isMethod('post'))
     {
@@ -195,20 +165,6 @@ class configurationActions extends sfActions
       case 'seriess':
         $subform = new FormsContainer(array($index=>new SeriesForm()),'SeriesForm');
         break;
-      case 'expenses':
-        $configForm->getWidgetSchema()->setNameFormat('expenses_settings[%s]');
-        $subform = new FormsContainer(array($index=>new ExpenseTypeForm()),'ExpenseTypeForm');
-        break;
-      case 'payments':
-        $subform = new FormsContainer(array($index=>new PaymentTypeForm()),'PaymentTypeForm');
-        break;  
-      case 'taxConditions':
-        $subform = new FormsContainer(array($index=>new TaxConditionForm()),'TaxConditionForm');
-        break;  
-      case 'product_categories':
-        $configForm->getWidgetSchema()->setNameFormat('products_settings[%s]');
-        $subform = new FormsContainer(array($index=>new ProductCategoryForm()),'ProductCategoryForm');
-        break;  
     }
     $configForm->embedForm($to, $subform);
     return $this->renderText($configForm[$to][$index]);

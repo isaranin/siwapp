@@ -20,9 +20,6 @@ class recurringActions extends sfActions
   {
     $this->forward404Unless($invoice = Doctrine::getTable('RecurringInvoice')->find($request->getParameter('id')), 
       sprintf('Object recurring_invoice does not exist with id %s', $request->getParameter('id')));
-    
-    $this->forward404Unless($invoice->getCompanyId() == $this->getUser()->getAttribute('company_id'),
-      sprintf('Object recurring_invoice does not exist with id %s', $request->getParameter('id')));
       
     return $invoice;
   }
@@ -37,13 +34,13 @@ class recurringActions extends sfActions
     
     // Warn the user if there are pending invoices waiting for being generated
     
-    if ($this->pending = RecurringInvoiceQuery::create()->Where('company_id = ?', sfContext::getInstance()->getUser()->getAttribute('company_id'))->countPending())
+    if ($this->pending = RecurringInvoiceQuery::create()->countPending())
     {
       $i18n = $this->getContext()->getI18N();
       $this->getUser()->warn(sprintf($i18n->__("There are %d recurring invoices that were not executed."), $this->pending));
     }
     
-    $q = RecurringInvoiceQuery::create()->Where('company_id = ?', sfContext::getInstance()->getUser()->getAttribute('company_id'))->search($search)->orderBy("$sort[0] $sort[1]");
+    $q = RecurringInvoiceQuery::create()->search($search)->orderBy("$sort[0] $sort[1]");
     // totals
     $this->gross = $q->total('gross_amount');
     // expected totals
@@ -61,6 +58,14 @@ class recurringActions extends sfActions
   {
     $i18n = $this->getContext()->getI18N();
     $recurring = new RecurringInvoice();
+    $recurring->fromArray(array(
+                            'customer_name'=>$i18n->__('Client Name'),
+                            'customer_identification'=>$i18n->__('Client Legal Id'),
+                            'contact_person'=> $i18n->__('Contact Person'),
+                            'invoicing_address'=> $i18n->__('Invoicing Address'),
+                            'shipping_address'=> $i18n->__('Shipping Address'),
+                            'customer_email'=> $i18n->__('Client Email Address')
+                            ));
 
     $this->invoiceForm = new RecurringInvoiceForm($recurring,array('culture'=>$this->culture));
     $this->title = $i18n->__('New Recurring Invoice');
@@ -128,6 +133,10 @@ class recurringActions extends sfActions
     }
     else
     {
+      foreach($form->getErrorSchema()->getErrors() as $k=>$v)
+      {
+        $this->getUser()->error(sprintf('%s: %s', $k, $v->getMessageFormat()));
+      }
       $this->getUser()->error('The recurring invoice has not been saved due to some errors.');
     }
   }

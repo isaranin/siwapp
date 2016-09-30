@@ -20,9 +20,6 @@ class productsActions extends sfActions
   {
     $this->forward404Unless($product = Doctrine::getTable('Product')->find($request->getParameter('id')),
       sprintf('Object product does not exist with id %s', $request->getParameter('id')));
-    
-    $this->forward404Unless($product->getCompanyId() == $this->getUser()->getAttribute('company_id'),
-      sprintf('Object product does not exist with id %s', $request->getParameter('id')));
       
     return $product;
   }
@@ -54,6 +51,11 @@ class productsActions extends sfActions
   {
     $i18n = $this->getContext()->getI18N();
     $product = new Product();
+    $product->fromArray(array(
+                          'reference'=>$i18n->__('Product reference'),
+                          'description'=>$i18n->__('Product description'),
+                          'price'=> $i18n->__('Product price')
+                          ));
     $this->productForm = new ProductForm($product, array('culture'=>$this->culture));
     $this->title       = $i18n->__('New Product');
     $this->action      = 'create';
@@ -199,30 +201,5 @@ class productsActions extends sfActions
       $request->getParameter('limit'));
 
     return $this->renderText(json_encode($items));
-  }
-  
-  public function executeShowStockAlerts(sfWebRequest $request)
-  {
-    $namespace  = $request->getParameter('searchNamespace');
-    $search     = $this->getUser()->getAttribute('search', null, $namespace);
-    $sort       = $this->getUser()->getAttribute('sort', array('reference', 'desc'), $namespace);
-    $page       = $this->getUser()->getAttribute('page', 1, $namespace);
-    $maxResults = $this->getUser()->getPaginationMaxResults();
-       
-    $q = ProductQuery::create()->stockAlarmsSearch($search)->orderBy("$sort[0] $sort[1], reference $sort[1]");
-    // totals
-    $this->quantity = $q->total('quantity');
-    $this->sold     = $q->total('sold');
-
-    $this->pager = new sfDoctrinePager('Product', $maxResults);
-    $this->pager->setQuery($q);
-    $this->pager->setPage($page);
-    $this->pager->init();
-   
-    $this->getUser()->setAttribute('page', $request->getParameter('page'));
-    
-    $this->sort = $sort;
-    
-    $this->setTemplate("index");
   }
 }

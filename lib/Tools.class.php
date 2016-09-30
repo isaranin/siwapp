@@ -89,21 +89,4 @@ class Tools
     return $net_amount + $tax_amount ;
   }
   
-   public static function getNetAmount($unitary_cost, $quantity, $discount, $total_taxes_percent)
-  {
-    $base_amount = $unitary_cost * $quantity;
-    $discount_amount = $base_amount * $discount / 100;
-    $net_amount = $base_amount - $discount_amount;
-    return $net_amount ;
-  }
-  
-  public static function getDecimals()
-  {
-    return PropertyTable::get('currency_decimals',2);
-  }
-
-  public static function getRounded($value, $precision=0)
-  {//http://php.net/manual/en/function.round.php - alveda at pinoywebsys dot com 20-Apr-2008 12:09
-    return round(round($value*pow(10, $precision+1), 0), -1)/pow(10, $precision+1);
-  }
 }

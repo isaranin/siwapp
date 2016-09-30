@@ -51,7 +51,7 @@
         <target> Število</target>
       </trans-unit>
       <trans-unit>
-        <source>Name/Legal Name</source>
+        <source>Customer Name</source>
         <target>Ime stranke</target>
       </trans-unit>
       <trans-unit>

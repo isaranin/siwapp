@@ -8,7 +8,6 @@ class ProductQuery extends Doctrine_Query
                         IF(
                            inv.draft=1 
                            OR inv.type='RecurringInvoice' 
-                           OR inv.type='Expense' 
                            OR i.quantity IS NULL,
                            0, 
                            i.quantity
@@ -23,11 +22,10 @@ class ProductQuery extends Doctrine_Query
           IF(
              inv.draft = 1
              OR inv.type = 'RecurringInvoice'
-             OR inv.type='Expense' 
              OR i.quantity IS NULL
              OR i.unitary_cost IS NULL,
              0, 
-             (case when i.discount <> 0.00 then (1 - i.discount * 0.01) else 1.00 end) * i.quantity * i.unitary_cost
+             i.quantity * i.unitary_cost
             )
          ) AS sold";
 
@@ -38,11 +36,9 @@ class ProductQuery extends Doctrine_Query
 
       
     $q->addSelect('p.id, p.reference, p.description, p.price')
-      ->addSelect('pc.name AS category')
       ->addSelect($q->quantity_col)
       ->addSelect($q->sold_col)
-      ->from("Product p, p.Items i, i.Common inv, p.ProductCategory pc")
-      ->Where('company_id = ?', sfContext::getInstance()->getUser()->getAttribute('company_id'))
+      ->from("Product p, p.Items i, i.Common inv")
       ->orderBy('p.reference asc')
       ->groupBy('p.id');
     //    echo $q->getSqlQuery();
@@ -60,7 +56,6 @@ class ProductQuery extends Doctrine_Query
     if($search)
     {
       if(isset($search['query']))  $this->textSearch($search['query']);
-      if(isset($search['category']))  $this->categorySearch($search['category']);
       if(isset($search['from'])) $this->fromDate($search['from']);
       if(isset($search['to'])) $this->toDate($search['to']);
       //TODO MCY adding other query
@@ -76,39 +71,44 @@ class ProductQuery extends Doctrine_Query
       //TODO MCY check if we could use a parameter instead
       $this
         ->addWhere("(p.reference LIKE '%$text%'".
-                   " OR p.description LIKE '%$text%') ");
-                   
+                   "OR p.description LIKE '%$text%') ");
 
     }
     return $this;
   }
 
-  public function categorySearch($category)
+  public function fromDate($date = null)
   {
-    if($category)
+    if(!($date=$this->filterDate($date)))
     {
-      //TODO MCY check if we could use a parameter instead
-      $this
-        ->addWhere("p.category_id = $category ");
-
+      return $this;
     }
-    return $this;
+    else
+    {
+      return $this
+        ->andWhere(
+                 'inv.issue_date >= ?', 
+                 sfDate::getInstance($date)->to_database()
+                 )
+        ->andWhere("inv.draft = ?",0);
+    }
   }
-  
-  public function stockAlarmsSearch($search = null)
+
+  public function toDate($date = null)
   {
-    $this
-      ->addWhere("stock <= min_stock_level");
-    
-    if($search)
+    if (!($date = $this->filterDate($date)))
     {
-      if(isset($search['query']))  $this->textSearch($search['query']);
-      if(isset($search['category']))  $this->categorySearch($search['category']);
-      if(isset($search['from'])) $this->fromDate($search['from']);
-      if(isset($search['to'])) $this->toDate($search['to']);
-      //TODO MCY adding other query
+      return $this;
     }
-    return $this;
+    else
+    {
+      return $this->
+        andWhere(
+                 'inv.issue_date < ?', 
+                 sfDate::getInstance($date)->addDay(1)->to_database()
+                 )->
+        andWhere('inv.draft = ?',0);
+    }   
   }
 
   public function total($field)
@@ -128,32 +128,7 @@ class ProductQuery extends Doctrine_Query
 
     return $other->fetchOne() ? $other->fetchOne()->getTotal():0;
   }
-    
-
-  public function fromDate($date = null)
-  {
-    if (!($date = $this->filterDate($date)))
-    {
-      return $this;
-    }
-    else
-    {
-      return $this->andWhere('inv.issue_date >= ?', sfDate::getInstance($date)->to_database());
-    }
-  }
   
-
-  public function toDate($date = null)
-  {
-    if (!($date = $this->filterDate($date)))
-    {
-      return $this;
-    }
-    else
-    {
-      return $this->andWhere('inv.issue_date < ?', sfDate::getInstance($date)->addDay(1)->to_database());
-    }
-  }
   /**
    * Internal method to deduce a correct or null date value.
    * @param mixed date; if it is an array it must have the 'year', 'month' and 'day' keys.

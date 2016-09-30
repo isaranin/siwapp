@@ -19,7 +19,7 @@ $csrf     = new sfForm();
           
           <tr>
             <td colspan="4" class="listing-options noborder">
-              <?php include_partial('estimates/batchActions')?>
+              <?php include_partial('invoices/batchActions')?>
             </td>
             <td class="strong noborder"><?php echo __('Total') ?></td>
             <td class="strong noborder right"><?php echo format_currency($gross, $currency) ?></td>
@@ -35,11 +35,10 @@ $csrf     = new sfForm();
               // sort parameter => array (Name, default order)
               renderHeaders(array(
                 'number'        => array('Number', 'desc'),
-                'customer_name' => array('Customer', 'asc'),
+                'customer_name' => array('Customer Name', 'asc'),
                 'issue_date'    => array('Date', 'desc'),
                 'status'        => array('Status', 'asc'),
-                'gross_amount'  => array('Total', 'desc'),
-                'related_invoice'  => array('Invoice', 'asc')
+                'gross_amount'  => array('Total', 'desc')
                 ), $sf_data->getRaw('sort'), '@estimates');
             ?>
           </tr>
@@ -52,7 +51,6 @@ $csrf     = new sfForm();
               $id       = $invoice->getId();
               $parity   = ($i % 2) ? 'odd' : 'even';
               $closed   = ($invoice->getStatus() == Invoice::CLOSED);
-
             ?>
             <tr id="invoice-<?php echo $id ?>" class="<?php echo "$parity link invoice-$id ".($closed ? 'show' : 'edit') ?>">
               <td class="check"><input rel="item" type="checkbox" value="<?php echo $id ?>" name="ids[]"></td>
@@ -70,18 +68,6 @@ $csrf     = new sfForm();
                 <?php endif?>
                 <?php echo format_currency($invoice->getGrossAmount(), $currency)  ?>
               </td>
-              <td><?php
-                        $rel = $invoice->getRelatedInvoice()->getId();
-                        if(isset($rel))
-                        {
-                           echo link_to(__('Go to Invoice'),'@invoices_show?id='.$rel);
-                        }
-                        else
-                        {
-                           echo __('Not invoiced');
-                        }
-
-               ?></td>
             </tr>
           <?php endforeach; ?>
         </tbody>
@@ -89,7 +75,7 @@ $csrf     = new sfForm();
         <tfoot>
           <tr class="noborder">
             <td colspan="10" class="listing-options">
-              <?php include_partial('estimates/batchActions'); ?>
+              <?php include_partial('invoices/batchActions'); ?>
             </td>
           </tr>
         </tfoot>

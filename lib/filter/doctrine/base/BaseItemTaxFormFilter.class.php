@@ -13,11 +13,9 @@ abstract class BaseItemTaxFormFilter extends BaseFormFilterDoctrine
   public function setup()
   {
     $this->setWidgets(array(
-      'company_id' => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('Company'), 'add_empty' => true)),
     ));
 
     $this->setValidators(array(
-      'company_id' => new sfValidatorDoctrineChoice(array('required' => false, 'model' => $this->getRelatedModelName('Company'), 'column' => 'id')),
     ));
 
     $this->widgetSchema->setNameFormat('item_tax_filters[%s]');
@@ -37,9 +35,8 @@ abstract class BaseItemTaxFormFilter extends BaseFormFilterDoctrine
   public function getFields()
   {
     return array(
-      'company_id' => 'ForeignKey',
-      'item_id'    => 'Number',
-      'tax_id'     => 'Number',
+      'item_id' => 'Number',
+      'tax_id'  => 'Number',
     );
   }
 }

@@ -41,12 +41,10 @@ $csrf     = new sfForm();
             <?php
               // sort parameter => array (Name, default order)
               renderHeaders(array(
-                'category' => array('Category', 'asc'),
                 'reference' => array('Reference', 'asc'),
                 'description'    => array('Description', 'desc'),
                 'price'    => array('Price', 'desc'),
-                'stock'    => array('Stock', 'desc'),
-                'quantity' => array('Sold Units', 'desc'),
+                'quantity' => array('Units', 'desc'),
                 'sold'     => array('Sold', 'desc')
                 ), $sf_data->getRaw('sort'), '@products');
             ?>
@@ -62,11 +60,9 @@ $csrf     = new sfForm();
             ?>
             <tr id="product-<?php echo $id ?>" class="<?php echo "$parity link product-$id " ?>">
               <td class="check"><input rel="item" type="checkbox" value="<?php echo $id ?>" name="ids[]"></td>
-             <td><?php echo $product->category ?></td>
               <td><?php echo $product->reference ?></td>
-              <td><?php echo $product->description ?></td>
+                <td><?php echo $product->description ?></td>
               <td><?php echo $product->price ?></td>            
-              <td><?php echo $product->stock." ".(($product->stock <= $product->min_stock_level) ? image_tag('icons/'.($stock_level = $product->stock < $product->min_stock_level ? 'danger' : 'caution').'.png', array("title"=> ($stock_level == "danger") ?  __('Very low stock') : __('Low stock'))) : ""); ?></td>            
               <td><?php echo $product->quantity ?></td>
               <td><?php echo format_currency($product->sold, $currency)?></td>
             </tr>

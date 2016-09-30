@@ -20,9 +20,6 @@ class estimatesActions extends sfActions
   {
     $this->forward404Unless($estimate = Doctrine::getTable('Estimate')->find($request->getParameter('id')),
       sprintf('Object estimate does not exist with id %s', $request->getParameter('id')));
-    
-    $this->forward404Unless($estimate->getCompanyId() == $this->getUser()->getAttribute('company_id'),
-      sprintf('Object estimate does not exist with id %s', $request->getParameter('id')));
       
     return $estimate;
   }
@@ -40,7 +37,7 @@ class estimatesActions extends sfActions
     $page       = $this->getUser()->getAttribute('page', 1, $namespace);
     $maxResults = $this->getUser()->getPaginationMaxResults();
     
-    $q = EstimateQuery::create()->Where('company_id = ?', sfContext::getInstance()->getUser()->getAttribute('company_id'))->search($search)->orderBy("$sort[0] $sort[1], number $sort[1]");
+    $q = EstimateQuery::create()->search($search)->orderBy("$sort[0] $sort[1], number $sort[1]");
     // totals
     $this->gross = $q->total('gross_amount');
 
@@ -60,6 +57,14 @@ class estimatesActions extends sfActions
   {
     $i18n = $this->getContext()->getI18N();
     $estimate = new Estimate();
+    $estimate->fromArray(array(
+                          'customer_name'=>$i18n->__('Client Name'),
+                          'customer_identification'=>$i18n->__('Client Legal Id'),
+                          'contact_person'=> $i18n->__('Contact Person'),
+                          'invoicing_address'=> $i18n->__('Invoicing Address'),
+                          'shipping_address'=> $i18n->__('Shipping Address'),
+                          'customer_email'=> $i18n->__('Client Email Address')
+                          ));
     $this->estimateForm = new EstimateForm($estimate, array('culture'=>$this->culture));
     $this->title       = $i18n->__('New Estimate');
     $this->action      = 'create';
@@ -145,7 +150,8 @@ class estimatesActions extends sfActions
         $result = $this->getMailer()->send($message);
         if($result)
         {
-         Doctrine_Manager::getInstance()->getCurrentConnection()->execute(" update common set sent_by_email = 1 where id =  ".$estimate->id);
+          $estimate->setSentByEmail(true);
+          $estimate->save();
         }
       }
     } catch (Exception $e) {
@@ -194,6 +200,10 @@ class estimatesActions extends sfActions
     }
     else
     {
+      foreach($form->getErrorSchema()->getErrors() as $k=>$v)
+      {
+        $this->getUser()->error(sprintf('%s: %s', $k, $v->getMessageFormat()));
+      }
       $this->getUser()->error($i18n->__('The estimate has not been saved due to some errors.'));
     }
   }

@@ -22,42 +22,6 @@ invoices_print:
   url:    /invoices/print/:action
   param:  { module: print, model: Invoice }
 
-invoices_export:
-  url:    /invoices/export/
-  param:  { module: invoices, action: export, tab: invoices, searchForm: false}
-
-invoices_remesar:
-  url:    /invoices/remesar/
-  param:  { module: invoices, action: remesar, tab: invoices, searchForm: false}
-
-invoices_remesarsepa:
-  url:    /invoices/remesarsepa/
-  param:  { module: invoices, action: remesarsepa, tab: invoices, searchForm: false}
-
-expenses:
-  url:   /expenses
-  param:  { module: expenses, action: index, tab: expenses, searchForm: true, searchNamespace: expenses }
-
-expenses_new:
-  url:   /expenses/new
-  param:  { module: expenses, action: new, tab: expenses, searchForm: false }
-
-expenses_show:
-  url:   /expenses/show/:id
-  param:  { module: expenses, action: show, tab: expenses, searchForm: false }
-
-expenses_edit:
-  url:   /expenses/edit/:id
-  param:  { module: expenses, action: edit, tab: expenses, searchForm: false }
-
-expenses_print:
-  url:    /expenses/print/:action
-  param:  { module: print, model: Expense }
-
-expenses_export:
-  url:    /expenses/export/
-  param:  { module: expenses, action: export, tab: expenses, searchForm: false}
-
 estimates_print:
   url:    /estimates/print/:action
   param:  { module: print, model: Estimate }
@@ -69,7 +33,7 @@ dashboard:
 dashboard_new:
   url: /invoices/new
   param: { module: invoices, action: new, tab: invoices, searchForm: false}
-
+  
 recurring:
   url:   /recurring
   param:  { module: recurring, action: index, tab: recurring, searchForm: true, searchNamespace: recurring }
@@ -81,7 +45,7 @@ recurring_new:
 recurring_edit:
   url:   /recurring/edit/:id
   param:  { module: recurring, action: edit, tab: recurring, searchForm: false }
-
+  
 estimates:
   url:   /estimates
   param:  { module: estimates, action: index, tab: estimates, searchForm: true, searchNamespace: estimates }
@@ -106,22 +70,6 @@ customers_edit:
   url:   /customers/edit/:id
   param:  { module: customers, action: edit, tab: customers, searchForm: false }
 
-supplier:
-  url:   /suppliers
-  param:  { module: suppliers, action: index, tab: suppliers, searchForm: true, searchNamespace: suppliers }
-
-suppliers:
-  url:   /suppliers
-  param:  { module: suppliers, action: index, tab: suppliers, searchForm: true, searchNamespace: suppliers }
-
-suppliers_new:
-  url:   /suppliers/new
-  param:  { module: suppliers, action: new, tab: suppliers, searchForm: false }
-
-suppliers_edit:
-  url:   /suppliers/edit/:id
-  param:  { module: suppliers, action: edit, tab: suppliers, searchForm: false }
-
 products:
   url:   /products
   param:  { module: products, action: index, tab: products, searchForm: true, searchNamespace: products }
@@ -134,38 +82,6 @@ products_edit:
   url:   /products/edit/:id
   param:  { module: products, action: edit, tab: products, searchForm: false }
   
-products_show_stock_alerts:
-  url:   /products/stockAlerts
-  param:  { module: products, action: showStockAlerts, tab: products, searchForm: true, searchNamespace: products }
-
-companies:
-  url:   /companies
-  param:  { module: companies, action: index, tab:companies, searchForm: true, searchNamespace: companies }
-
-companies_new:
-  url:   /companies/new
-  param:  { module: companies, action: new, tab: companies, searchForm: false }
-
-companies_edit:
-  url:   /companies/edit/:id
-  param:  { module: companies, action: edit, tab: companies, searchForm: false }
-
-change_company:
-  url:   /change_company
-  param:  { module: companies, action: change, tab: companies, searchForm: false }
-
-users:
-  url:   /users
-  param:  { module: users, action: index, tab:users, searchForm: true, searchNamespace: users }
-
-users_new:
-  url:   /users/new
-  param:  { module: users, action: new, tab: users, searchForm: false }
-
-users_edit:
-  url:   /users/edit/:id
-  param:  { module: users, action: edit, tab: users, searchForm: false }
-
 settings:
   url:   /settings/global
   param:  { module: configuration, action: settings, searchForm: false, tab: global }
@@ -174,14 +90,6 @@ profile:
   url:   /settings/profile
   param:  { module: configuration, action: profile, searchForm: false, tab: profile }
 
-products_settings:
-  url:   /settings/products
-  param:  { module: configuration, action: productsSettings, searchForm: false, tab: products }
-  
-expenses_settings:
-  url:   /settings/expenses
-  param:  { module: configuration, action: expensesSettings, searchForm: false, tab: expenses }
-
 templates_edit:
   url:   /settings/templates/edit/:id
   param:  { module: printTemplates, action: edit, searchForm: false, tab: templates }
@@ -189,6 +97,10 @@ templates_edit:
 templates:
   url:   /settings/templates/:action
   param:  { module: printTemplates, action: index, searchForm: false, tab: templates }
+
+siwapp_modules:
+  url:  /settings/modules
+  param: { module: configuration, action: siwappModules, searchForm: false, tab: siwapp_modules }
 
 password_recovery:
   url: /password_recovery

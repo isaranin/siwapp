@@ -15,7 +15,7 @@ class printTemplatesActions extends sfActions
   */
   public function executeIndex(sfWebRequest $request)
   {
-    $finder = Doctrine::getTable('Template')->createQuery()->where('company_id = ?', sfContext::getInstance()->getUser()->getAttribute('company_id'))->orderBy('Name', 'asc');
+    $finder = Doctrine::getTable('Template')->createQuery()->orderBy('Name', 'asc');
     $this->_csrf = new BaseForm();
     $this->templates = $finder->execute();
   }
@@ -65,7 +65,6 @@ class printTemplatesActions extends sfActions
     $request->checkCSRFProtection();
     $invoices = (array) $request->getParameter('invoices', array());
     $estimates = (array) $request->getParameter('estimates', array());
-    $expenses = (array) $request->getParameter('expenses', array());
     // check that there is only one template for each one
     if (count($invoices) > 1 || count($estimates) > 1)
     {
@@ -73,13 +72,12 @@ class printTemplatesActions extends sfActions
       $this->redirect('@templates');
     }
     
-    $templates = Doctrine::getTable('Template')->createQuery()->where('company_id = ?', sfContext::getInstance()->getUser()->getAttribute('company_id'))->execute();
+    $templates = Doctrine::getTable('Template')->createQuery()->execute();
     foreach ($templates as $t)
     {
       $models = array();
       if (in_array($t->getId(), $invoices)) $models[] = 'Invoice';
       if (in_array($t->getId(), $estimates)) $models[] = 'Estimate';
-      if (in_array($t->getId(), $expenses)) $models[] = 'Expense';
       $t->setModels(implode(',', $models));
       $t->save();
     }

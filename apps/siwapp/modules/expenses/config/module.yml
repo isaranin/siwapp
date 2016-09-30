@@ -1,9 +1,0 @@
-all:
-  urls:
-    include: ['payments', 'search']
-    variables:
-      editRow:          expenses/edit
-      calculateInvoice: common/calculate
-      printHtml:        @expenses_print?action=print
-      printPdf:         @expenses_print?action=pdf
-      export:           @expenses_export

@@ -8,8 +8,7 @@ use_helper('Siwapp', 'JavascriptBase');
       <ul>
         <?php
         echo $form['query']->renderRow();        
-        echo $form['category']->renderRow();
-        echo $form['from']->renderRow(); 
+        echo $form['from']->renderRow();
         echo $form['to']->renderRow();
         echo $form['quick_dates']->renderRow();
         ?>

@@ -11,7 +11,5 @@ class TagForm extends PluginTagForm
 {
   public function configure()
   {
-    $this->widgetSchema['company_id'] = new sfWidgetFormInputHidden();
-    $this->setDefault('company_id' , sfContext::getInstance()->getUser()->getAttribute('company_id'));
   }
 }
