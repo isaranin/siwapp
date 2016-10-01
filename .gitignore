@@ -7,3 +7,5 @@ web/sf/
 web/config.php
 symfony.bat
 /nbproject/private/
+/config/databases.yml
+project.properties
